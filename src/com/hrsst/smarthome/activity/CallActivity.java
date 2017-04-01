@@ -139,7 +139,7 @@ public class CallActivity extends BaseCallActivity implements OnClickListener {
 			switch (msg.what) {
 			case 0:
 				Log.e("dxswifi", "rtsp ß∞‹");
-				Toast.makeText(mContext, "¡¨Ω” ß∞‹", Toast.LENGTH_SHORT).show();
+				Toast.makeText(mContext, R.string.conn_fail, Toast.LENGTH_SHORT).show();
 				reject();
 				break;
 			case 1:
@@ -295,7 +295,7 @@ public class CallActivity extends BaseCallActivity implements OnClickListener {
 						P2PHandler.getInstance().RTSPConnect(NpcCommon.mThreeNum, password, isOutCall, 3, callId, ipFlag, push_mesg, ipAddress,AppConfig.VideoMode, rtspHandler,callId);	
 					}
 				}else if(result ==Constants.P2P_SET.ACK_RESULT.ACK_PWD_ERROR){
-					Toast.makeText(mContext, R.string.psw_fail, Toast.LENGTH_SHORT).show();
+					Toast.makeText(mContext,R.string.password_error, Toast.LENGTH_SHORT).show();
                      finish();
 				}else if (result == Constants.P2P_SET.ACK_RESULT.ACK_NET_ERROR) {
 					P2PHandler.getInstance().checkPassword(idOrIp, password);

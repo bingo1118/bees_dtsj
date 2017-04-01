@@ -113,7 +113,7 @@ public class PhoneRegisterActivity extends Activity implements OnClickListener {
 						&& pwdNumStr.equals(pwdNum1Str)) {
 					ifExit(phoneNumStr);
 				} else {
-					Toast.makeText(mContext, R.string.two_psw_diffrence, 1).show();
+					Toast.makeText(mContext,R.string.two_psw_diffrence, 1).show();
 				}
 			}
 			break;
@@ -146,7 +146,7 @@ public class PhoneRegisterActivity extends Activity implements OnClickListener {
 		public void onReceive(Context context, Intent intent) {
 			// TODO Auto-generated method stub
 			if (intent.getAction().equals("CODE_ALREADY_SEND_ACTION")) {
-				Toast.makeText(mContext, R.string.verification_code_have_send, 1).show();
+				Toast.makeText(mContext,R.string.verification_code_have_send, 1).show();
 				phoneNum.setEnabled(false);
 				pwdNum.setEnabled(false);
 				pwdNum1.setEnabled(false);
@@ -226,7 +226,7 @@ public class PhoneRegisterActivity extends Activity implements OnClickListener {
 										&& obj.equals("success")) {
 									mTimer.cancel();
 									count = 0;
-									Toast.makeText(mContext, R.string.regist_success, 1).show();
+									Toast.makeText(mContext,R.string.regist_success, 1).show();
 									registerBtn.setEnabled(true);
 									Intent i = new Intent();
 									i.setAction("PHONE_REGISTER_SUCCESS");

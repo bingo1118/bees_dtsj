@@ -192,20 +192,20 @@ public class AddTimerActivity extends Activity implements OnClickListener{
 					sb.append(Constants.WEEKEN_STRING[li.get(j)]).append(" ");
 				}
 				if(Constants.EVERY_DAY.equals(sb.toString())){
-					repetition_tv.setText(R.string.everyday);
+					repetition_tv.setText(Constants.WeekType.EVERY_DAY_TYPE);
 					orderDatas[2] = 0x01;
 				}else if(Constants.WORKING_DAY.equals(sb.toString())){
-					repetition_tv.setText(R.string.workday);
+					repetition_tv.setText(Constants.WeekType.WORKING_DAY_TYPE);
 					orderDatas[2] = 0x01;
 				}else if(Constants.WEEKEN_DAY.equals(sb.toString())){
-					repetition_tv.setText(R.string.weekend);
+					repetition_tv.setText(Constants.WeekType.WEEKEN_DAY_TYPE);
 					orderDatas[2] = 0x01;
 				}else{
 					repetition_tv.setText(sb.toString());
 					orderDatas[2] = 0x01;
 				}
 			}else{
-				repetition_tv.setText(R.string.run_once);
+				repetition_tv.setText(Constants.WeekType.ONCE_TYPE);
 				//getWeek();
 				orderDatas[2] = 0x00;
 			}
@@ -272,7 +272,7 @@ public class AddTimerActivity extends Activity implements OnClickListener{
 				String receiveFlag = mUnPackageFromServer.timerOrder;
 				byte[] seq = mUnPackageFromServer.seq;
 				if("true".equals(receiveFlag)){
-					Toast.makeText(mContext, R.string.set_success, Toast.LENGTH_SHORT).show();
+					Toast.makeText(mContext, R.string.configuration_success, Toast.LENGTH_SHORT).show();
 					mSocketUDPClient.sendMsg(SendServerOrder.ClientACKOrder(mac,seq));
 					Intent i = new Intent(mContext,TimerListActivity.class);
 					i.putExtra("dwMac", mac);
@@ -280,7 +280,7 @@ public class AddTimerActivity extends Activity implements OnClickListener{
 					finish();
 				}
 				if("fail".equals(receiveFlag)){
-					Toast.makeText(mContext, R.string.set_fail, Toast.LENGTH_SHORT).show();
+					Toast.makeText(mContext, R.string.configurantion_fail, Toast.LENGTH_SHORT).show();
 					mSocketUDPClient.sendMsg(SendServerOrder.ClientACKOrder(mac,seq));
 				}
 				if(dialog!=null&&dialog.isShowing()){
@@ -404,11 +404,11 @@ public class AddTimerActivity extends Activity implements OnClickListener{
 					firstSb.append(Constants.WEEKEN_STRING[li.get(j)]).append(" ");
 				}
 				if(Constants.EVERY_DAY.equals(firstSb.toString())){
-					repetition_tv.setText(R.string.everyday);
+					repetition_tv.setText(Constants.WeekType.EVERY_DAY_TYPE);
 				}else if(Constants.WORKING_DAY.equals(firstSb.toString())){
-					repetition_tv.setText(R.string.workday);
+					repetition_tv.setText(Constants.WeekType.WORKING_DAY_TYPE);
 				}else if(Constants.WEEKEN_DAY.equals(firstSb.toString())){
-					repetition_tv.setText(R.string.weekend);
+					repetition_tv.setText(Constants.WeekType.WEEKEN_DAY_TYPE);
 				}else{
 					SimpleDateFormat d = new SimpleDateFormat("HH:mm:ss");
 				    String dateStr = d.format(Long.valueOf(System.currentTimeMillis()));
@@ -418,9 +418,9 @@ public class AddTimerActivity extends Activity implements OnClickListener{
 				    long typeTime = statTime-nowTime;
 				    long typeTime1 = lastTime-nowTime;
 				    if(typeTime>=0&&typeTime1>=0){
-				    	repetition_tv.setText(R.string.today);
+				    	repetition_tv.setText(Constants.WeekType.TODAY);
 				    }else{
-				    	repetition_tv.setText(R.string.tomorrow);
+				    	repetition_tv.setText(Constants.WeekType.TOMORROW);
 				    }
 				}
 			}
@@ -585,19 +585,19 @@ public class AddTimerActivity extends Activity implements OnClickListener{
 	    secondWheel = (WheelView)findViewById(R.id.secondWheel);
         
         hourWheel.setAdapter(new StrericWheelAdapter(hourContent));
-        hourWheel.setCurrentItem(curHour);
+        hourWheel.setCurrentItem(curHour-1);
         hourWheel.setCyclic(true);
         hourWheel.addScrollingListener(scrolledListener);
         hourWheel.setInterpolator(new AnticipateOvershootInterpolator());
         
         minuteWheel.setAdapter(new StrericWheelAdapter(minuteContent));
-        minuteWheel.setCurrentItem(curMinute);
+        minuteWheel.setCurrentItem(curMinute-1);
         minuteWheel.setCyclic(true);
         minuteWheel.addScrollingListener(scrolledListener);
         minuteWheel.setInterpolator(new AnticipateOvershootInterpolator());
 
         secondWheel.setAdapter(new StrericWheelAdapter(secondContent));
-        secondWheel.setCurrentItem(curSecond);
+        secondWheel.setCurrentItem(curSecond-1);
         secondWheel.setCyclic(true);
         secondWheel.addScrollingListener(scrolledListener);
         secondWheel.setInterpolator(new AnticipateOvershootInterpolator());

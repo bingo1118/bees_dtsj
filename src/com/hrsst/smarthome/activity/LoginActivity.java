@@ -40,7 +40,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 	}
 
 	public void init() {
-		Bitmap mBitmap = BitmapCache.getInstance().getBitmap(R.drawable.denglu_beijing_dtsj,mContext);
+		Bitmap mBitmap = BitmapCache.getInstance().getBitmap(R.drawable.denglu_beijing,mContext);
 		BitmapDrawable bd = new BitmapDrawable(mContext.getResources(), mBitmap);
 		ImageView denglu_image = (ImageView) findViewById(R.id.denglu_image);
 		denglu_image.setImageDrawable(bd);
@@ -54,6 +54,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 		registerUser = (TextView) findViewById(R.id.tv_new_user);
 		forgetPwd = (TextView) findViewById(R.id.tv_forget_pwd);
 		userID.setText(nameStr);
+		userID.setSelection(nameStr.length());//@@
 		userPwd.setText(pwdStr);
 		loginBtn.setOnClickListener(this);
 		registerUser.setOnClickListener(this);

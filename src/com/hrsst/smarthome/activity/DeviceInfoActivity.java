@@ -52,7 +52,8 @@ public class DeviceInfoActivity extends Activity implements OnClickListener {
 	private byte[] states;
 	private TextView mTextView,relate_tv,relate_tv_name;
 	private RelativeLayout socket_info_bg, more_control_rela, cancel_tv_name,
-			modify_dev_name, fk_tv_name, door_tv_name, dev_share,infrared_tv_name,gas_tv_name;
+			modify_dev_name, fk_tv_name, door_tv_name, dev_share,infrared_tv_name,gas_tv_name,
+			sj_tv_name,ykq_tv_name;//@@
 	private String fromUserNum;
 	private String modifyName;
 	private String devStatus,relateResult;
@@ -92,6 +93,8 @@ public class DeviceInfoActivity extends Activity implements OnClickListener {
 		more_control_image_view = (ImageView) findViewById(R.id.more_control_image_view);
 		cancel_tv_name = (RelativeLayout) findViewById(R.id.cancel_tv_name);
 		door_tv_name = (RelativeLayout) findViewById(R.id.door_tv_name);
+		sj_tv_name=(RelativeLayout)findViewById(R.id.sj_tv_name);//@@
+		ykq_tv_name=(RelativeLayout)findViewById(R.id.ykq_tv_name);//@@
 		modify_dev_name = (RelativeLayout) findViewById(R.id.modify_dev_name);
 		fk_tv_name = (RelativeLayout) findViewById(R.id.fk_tv_name);
 		dev_share = (RelativeLayout) findViewById(R.id.dev_share);
@@ -112,13 +115,15 @@ public class DeviceInfoActivity extends Activity implements OnClickListener {
 		door_tv_name.setOnClickListener(this);
 		modify_dev_name.setOnClickListener(this);
 		dev_share.setOnClickListener(this);
+		sj_tv_name.setOnClickListener(this);
+		ykq_tv_name.setOnClickListener(this);
 		if (ocState == 1) {
 			Bitmap mBitmap = BitmapCache.getInstance().getBitmap(R.drawable.bj_on,mContext);
 			BitmapDrawable bd = new BitmapDrawable(mContext.getResources(), mBitmap);
 			socket_info_bg.setBackground(bd);
 			socket_mImageView.setBackgroundResource(R.drawable.dev_button);
 			openOrClose.setImageResource(R.drawable.switch_selector_on);
-			devStatus=getString(R.string.device_on);
+			devStatus=getResources().getString(R.string.on);
 			mTextView.setText(devName+" "+devStatus);
 			ocState = 0;
 		} else {
@@ -128,7 +133,7 @@ public class DeviceInfoActivity extends Activity implements OnClickListener {
 			socket_mImageView.setBackgroundResource(R.drawable.dev_button_off);
 			openOrClose.setImageResource(R.drawable.switch_selector);
 			ocState = 1;
-			devStatus=getString(R.string.device_off);
+			devStatus=getResources().getString(R.string.off);
 			mTextView.setText(devName+" "+devStatus);
 		}
 		states = new byte[8];
@@ -174,7 +179,10 @@ public class DeviceInfoActivity extends Activity implements OnClickListener {
 				if("success".equals(result)){
 					relateResult=null;
 					Toast.makeText(mContext, R.string.remove_succcess, Toast.LENGTH_SHORT).show();
-					relate_tv.setText(R.string.deviceinfoactivity_bind);
+					//更新ui
+					byte[] orderSend =SendServerOrder.findBinderCameraAndSocket(mac);//@@
+					mSocketUDPClient.sendMsg(orderSend);//@@
+					relate_tv.setText(R.string.bind);
 				}else{
 					Toast.makeText(mContext, R.string.remove_fail, Toast.LENGTH_SHORT).show();
 				}
@@ -200,7 +208,7 @@ public class DeviceInfoActivity extends Activity implements OnClickListener {
 					mSocketUDPClient.sendMsg(orderSend);
 					relate_tv.setText(R.string.deviceinfoactivity_unbind);
 				}else{
-					Toast.makeText(mContext, R.string.unbind_fail, Toast.LENGTH_SHORT).show();
+					Toast.makeText(mContext, R.string.bind_fail, Toast.LENGTH_SHORT).show();
 				}
 				cameraMac=null;
 				if(null!=dialog_loading){
@@ -222,12 +230,13 @@ public class DeviceInfoActivity extends Activity implements OnClickListener {
 					if("yes".equals(relateResult)){
 						relate_image.setImageResource(R.drawable.relate_selector_on);
 						String devName = mUnPackageFromServer.devName;
-						relate_tv_name.setText("已与摄像头："+devName+R.string.deviceinfoactivity_bind);
-						relate_tv.setText(R.string.deviceinfoactivity_unbind);
+						relate_tv_name.setText(getResources().getString(R.string.connected_with)+devName);
+						relate_tv
+						.setText(R.string.deviceinfoactivity_unbind);
 					}else{
 						relate_image.setImageResource(R.drawable.relate_selector);
 						relate_tv_name.setText("");
-						relate_tv.setText(R.string.deviceinfoactivity_bind);
+						relate_tv.setText(R.string.bind);
 					}
 				}
 			}
@@ -244,7 +253,7 @@ public class DeviceInfoActivity extends Activity implements OnClickListener {
 					socket_mImageView.setBackgroundResource(R.drawable.dev_button);
 					openOrClose.setImageResource(R.drawable.switch_selector_on);
 					ocState = 0;
-					devStatus = arg0.getString(R.string.device_on);
+					devStatus =getResources().getString(R.string.on);
 					mTextView.setText(devName+" "+devStatus);
 				}
 				if ("open".equals(receiveFlag)) {
@@ -254,7 +263,7 @@ public class DeviceInfoActivity extends Activity implements OnClickListener {
 					socket_mImageView.setBackgroundResource(R.drawable.dev_button_off);
 					openOrClose.setImageResource(R.drawable.switch_selector);
 					ocState = 1;
-					devStatus = arg0.getString(R.string.device_off);
+					devStatus = getResources().getString(R.string.off);
 					mTextView.setText(devName+" "+devStatus);
 				}
 			}
@@ -272,7 +281,7 @@ public class DeviceInfoActivity extends Activity implements OnClickListener {
 					case "success":
 						devName = modifyName;
 						mTextView.setText(devName+" "+devStatus);
-						Toast.makeText(mContext, R.string.change_success, 1).show();
+						Toast.makeText(mContext, R.string.modify_success, 1).show();
 						break;
 					case "failed":
 						Toast.makeText(mContext, R.string.change_fail, 1).show();
@@ -299,20 +308,7 @@ public class DeviceInfoActivity extends Activity implements OnClickListener {
 				mSocketUDPClient.sendMsg(orderSend);
 			}
 			break;
-		case R.id.gas_tv_name:// 燃气列表
-			more_control_rela.setVisibility(View.GONE);
-			Intent gas = new Intent(mContext, AlarmTypeListActivity.class);
-			gas.putExtra("type", 4);
-			gas.putExtra("mac", mac);
-			startActivity(gas);
-			break;
-		case R.id.infrared_tv_name:// 红外列表
-			more_control_rela.setVisibility(View.GONE);
-			Intent infrared = new Intent(mContext, AlarmTypeListActivity.class);
-			infrared.putExtra("type", 3);
-			infrared.putExtra("mac", mac);
-			startActivity(infrared);
-			break;
+		
 		case R.id.socket_mImageView:
 			//socket_mImageView.setBackgroundResource(R.drawable.dev_button);
 			openOrColsed();
@@ -384,12 +380,18 @@ public class DeviceInfoActivity extends Activity implements OnClickListener {
 					mUserDevice.setDevName(modifyName);
 					mUserDevice.setDevMac(mac);
 					modifyDialog.dismiss();
-					byte[] orderSend =SendServerOrder.ModifyDev(mUserDevice,(byte)0x02);
-					mSocketUDPClient.sendMsg(orderSend);
+					if(modifyName.length()>15){
+						Toast.makeText(mContext, R.string.name_too_long, Toast.LENGTH_SHORT).show();//@@
+					}else{
+						byte[] orderSend =SendServerOrder.ModifyDev(mUserDevice,(byte)0x02);
+						mSocketUDPClient.sendMsg(orderSend);
+					}
+					
 				}
 			});
 			modify_named.setFocusable(true);
 			modify_named.setText(devName);
+			modify_named.setSelection(devName.length());//@@
 			break;
 		case R.id.fk_tv_name:// 烟感列表
 			more_control_rela.setVisibility(View.GONE);
@@ -405,6 +407,34 @@ public class DeviceInfoActivity extends Activity implements OnClickListener {
 			i1.putExtra("mac", mac);
 			startActivity(i1);
 			break;
+		case R.id.gas_tv_name:// 燃气列表
+			more_control_rela.setVisibility(View.GONE);
+			Intent gas = new Intent(mContext, AlarmTypeListActivity.class);
+			gas.putExtra("type", 4);
+			gas.putExtra("mac", mac);
+			startActivity(gas);
+			break;
+		case R.id.infrared_tv_name:// 红外列表
+			more_control_rela.setVisibility(View.GONE);
+			Intent infrared = new Intent(mContext, AlarmTypeListActivity.class);
+			infrared.putExtra("type", 3);
+			infrared.putExtra("mac", mac);
+			startActivity(infrared);
+			break;
+		case R.id.sj_tv_name:// 水禁列表
+			more_control_rela.setVisibility(View.GONE);
+			Intent sj = new Intent(mContext, AlarmTypeListActivity.class);
+			sj.putExtra("type", 5);
+			sj.putExtra("mac", mac);
+			startActivity(sj);
+			break;
+		case R.id.ykq_tv_name:// 遥控器列表
+			more_control_rela.setVisibility(View.GONE);
+			Intent ykq = new Intent(mContext, AlarmTypeListActivity.class);
+			ykq.putExtra("type", 6);
+			ykq.putExtra("mac", mac);
+			startActivity(ykq);
+			break;
 		case R.id.dev_share:// 设备共享
 			View shareView = LayoutInflater.from(mContext).inflate(
 					R.layout.modify_dev_name_dialog, null);
@@ -414,7 +444,7 @@ public class DeviceInfoActivity extends Activity implements OnClickListener {
 					.findViewById(R.id.confire_modify);
 			final EditText shareView_modify_named = (EditText) shareView
 					.findViewById(R.id.modify_named);
-			shareView_modify_named.setHint(R.string.please_input_other_side_account);
+			shareView_modify_named.setHint(R.string.input_other_side_account);
 			AlertDialog.Builder shareView_builder = new AlertDialog.Builder(
 					mContext);
 			modifyDialog = shareView_builder.create();
@@ -446,7 +476,7 @@ public class DeviceInfoActivity extends Activity implements OnClickListener {
 						mSocketUDPClient.sendMsg(SendServerOrder.ShareDev(mac,
 								fromUserNum, toUserNum));
 					} else {
-						Toast.makeText(mContext, R.string.input_account_error, 1).show();
+						Toast.makeText(mContext, R.string.input_account_fail_input_again, 1).show();
 					}
 				}
 			});

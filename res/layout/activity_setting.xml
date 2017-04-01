@@ -7,7 +7,7 @@
     <RelativeLayout 
         android:layout_width="match_parent"
         android:layout_height="160dp"
-        android:background="@drawable/yetoutu_dt"
+        android:background="@drawable/yetoutu"
         >
         <TextView
             android:id="@+id/come_back" 

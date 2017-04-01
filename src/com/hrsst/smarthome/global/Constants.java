@@ -4,14 +4,19 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 public class Constants {
-	public static final String SERVER_URL = "http://119.29.155.148/SmartHome";//原119.29.155.148
+	public static final String SERVER_URL = "http://119.29.155.148/SmartHome";
+	public static final String SERVER_URL2 = "http://119.29.155.148/smartHome2";
 	public static final String TEST_SERVER_URL = "http://192.168.56.1:8080/SmartHome";
 	public static final String USER_IFEXIT_URL = SERVER_URL+"/ifExitUserRegister.action";
+	public static final String ADDENVIRONMENTDEVICE = SERVER_URL2+"/servlet/AddEnvironmentDevice";//添加环境探测器@@
+	public static final String HTTPGETDEV = SERVER_URL2+"/servlet/GetDeviceStateAction?userNum=";//获取设备信息@@
+	public static final String GETHISTORYINFO= SERVER_URL2+"/servlet/GetHistoryInfomation";//获取环境探测器历史数据@@
+	
 	public static final String UPDATE_USER_PWD_URL = SERVER_URL+"/updateUserPwd.action";
 	public static final String USER_LOGIN_URL = SERVER_URL+"/loginUser.action";
 	public static final String USER_REGISTER_URL = SERVER_URL+"/saveUserRegister.action";
-	public static final String BIND_ALIAS_URL = "http://119.29.155.148/GeTuiPush/getCid.action";//原119.29.155.148
-	public static final String ERROR_URL = "http://119.29.155.148/UploadError/UploadServlet";//原119.29.155.148
+	public static final String BIND_ALIAS_URL = "http://119.29.155.148/GeTuiPush/getCid.action";
+	public static final String ERROR_URL = "http://119.29.155.148/UploadError/UploadServlet";
 	
 	//定时接口
 	public static final String GET_TIMER_LIST_URL = SERVER_URL+"/findAllDwTimer.action";
@@ -29,12 +34,12 @@ public class Constants {
 	//获取系统消息列表
 	public static final String GET_SYSTEM_MSG_URL = SERVER_URL+"/findShareMessagesList.action";
 	//更新接口
-	public static final String UPDATE_URL="http://119.29.155.148/download/update_bees.xml";//原119.29.155.148
+	public static final String UPDATE_URL="http://119.29.155.148/download/update_bees.xml";
 	
-	public static final String[] WEEKEN_STRING = {"SUN","MON","TUE","WED","THU","FRI","SAT"};
-	public static final String EVERY_DAY = "SUN MON TUE WED THU FRI SAT ";
-	public static final String WORKING_DAY = "MON TUE WED THU FRI ";
-	public static final String WEEKEN_DAY = "SUN SAT ";
+	public static final String[] WEEKEN_STRING = {"星期日","星期一","星期二","星期三","星期四","星期五","星期六"};
+	public static final String EVERY_DAY = "星期日 星期一 星期二 星期三 星期四 星期五 星期六 ";
+	public static final String WORKING_DAY = "星期一 星期二 星期三 星期四 星期五 ";
+	public static final String WEEKEN_DAY = "星期日 星期六 ";
 	
 	public static class RegisterType{
 		public static final int PHONE=0;
@@ -154,12 +159,12 @@ public class Constants {
 	public static class WifiInfo{
 		public static final String SSID="HRSST_18fe34d6899d";
 		public static final String WIFI_PASSWORD="0123456789";
-		public static final String WIFI_IP="192.168.4.1";//设备ip地址..
-		public static final int WIFI_PORT=50000;//设备端口..
+		public static final String WIFI_IP="192.168.4.1";
+		public static final int WIFI_PORT=50000;
 	}
 	
 	public static class SeverInfo{
-		private static final String SEVER_IP="119.29.155.148";//原119.29.155.148
+		private static final String SEVER_IP="119.29.155.148";//119.29.155.148
 		public static final int PORT=51020;
 		public static InetAddress SERVER=null;
 		static{
@@ -183,7 +188,7 @@ public class Constants {
 	
 	//sst
 	//URL
-		public static final String URL_HEAD = "http://119.29.155.148/NotificationToPush/";//原119.29.155.148
+		public static final String URL_HEAD = "http://119.29.155.148/NotificationToPush/";
 		public static final String ADD_CAMERA_URL = URL_HEAD+"saveCamera.action";
 		public static final String DEL_CAMERA_URL = URL_HEAD+"deleteCamera.action";
 		public static final String NEW_USERINFO_URL = URL_HEAD+"newDeviceOnline.action";
@@ -200,7 +205,7 @@ public class Constants {
 		public static final String FINDALARMMESSAGE_BY_TIME = URL_HEAD+"findAlarmByUserID.action";
 		public static final String GET_ALARM_TYPE_URL = URL_HEAD+"findDeviceAlarmType.action";
 		public static final String GET_ALARM_TYPE_LIST_URL = URL_HEAD+"findDeviceAlarmTypeList.action";
-		public static final String DOWNLOADIMAGES_URL = "http://119.29.155.148/images/";//原119.29.155.148
+		public static final String DOWNLOADIMAGES_URL = "http://119.29.155.148/images/";
 		
 		public static final String[] STATUS= {"1","2","3","4","5"};
 		

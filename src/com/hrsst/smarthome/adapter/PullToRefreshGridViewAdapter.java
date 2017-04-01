@@ -8,6 +8,7 @@ import java.util.TreeSet;
 
 import com.hrsst.smarthome.dtsj.R;
 import com.hrsst.smarthome.global.Constants;
+import com.hrsst.smarthome.pojo.EnvironmentInfo;
 import com.hrsst.smarthome.pojo.UserDevice;
 import com.hrsst.smarthome.util.BitmapCache;
 import com.p2p.core.P2PHandler;
@@ -44,6 +45,12 @@ public class PullToRefreshGridViewAdapter extends BaseAdapter {
 	public PullToRefreshGridViewAdapter(Context mContext,List<UserDevice> list) {
 		this.mContext = mContext;
 		this.list = list;
+		
+//		UserDevice dev=new UserDevice();
+//		dev.setDevType(3);
+//		this.list.add(dev);
+		
+		
 		socketPos =new TreeSet<Integer>();
 		cameraPos =new TreeSet<Integer>();
 		m = new TreeMap<String, Integer>();
@@ -64,31 +71,87 @@ public class PullToRefreshGridViewAdapter extends BaseAdapter {
 		return position;
 	}
 
+	//position=list.size+1
 	@SuppressLint("NewApi")
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
-		if (convertView == null) {
-			convertView = LayoutInflater.from(mContext).inflate(R.layout.adapter_uselayout, null);
-			convertView.setPadding(35, 15, 0, 10);
-			holder = new ViewHolder();
-			holder.image = (ImageView) convertView.findViewById(R.id.mImageView);
-			holder.defence_image = (ImageView) convertView.findViewById(R.id.defence_image);
-			holder.text = (TextView) convertView.findViewById(R.id.mTextView);
-			holder.open_or_close_tv = (TextView) convertView.findViewById(R.id.open_or_close_tv);
-			holder.device_list_rela = (RelativeLayout) convertView.findViewById(R.id.device_list_rela);
-			convertView.setTag(holder);
-		} else {
-			holder = (ViewHolder) convertView.getTag();
+		UserDevice mUserDevice = null;
+		int type = 0;
+		if(position<list.size()){
+			mUserDevice=list.get(position);
+			type = mUserDevice.getDevType();
 		}
-		if(list.size()>0&&position<list.size()){
-			UserDevice mUserDevice =list.get(position);
-			//��������ͷ����
-			int type = mUserDevice.getDevType();
+		if (convertView == null) {
+			if(type==3){
+				EnvironmentInfo info=mUserDevice.getEnvironment();
+				convertView = LayoutInflater.from(mContext).inflate(R.layout.air_dev, null);
+				convertView.setPadding(50, 15, 0, 10);
+//				convertView.setPadding(10, 15, 0, 10);
+				if(info==null){
+					info=new EnvironmentInfo();
+				}
+				TextView temperature=(TextView)convertView.findViewById(R.id.tv_temperature);//温度
+				temperature.setText(info.getTemperature()+"°");
+				TextView humidity=(TextView)convertView.findViewById(R.id.tv_humidity);//湿度
+				humidity.setText(info.getHumidity()+"%");
+				TextView pm25=(TextView)convertView.findViewById(R.id.tv_pm25);//pm2.5
+				pm25.setText(info.getPm25()+" µg/m³");
+				TextView methanal=(TextView)convertView.findViewById(R.id.tv_methanal);//甲醛
+				methanal.setText(info.getMethanal()+" mg/m³");
+				TextView quality=(TextView)convertView.findViewById(R.id.tv_environment_quality);//空气质量
+				switch (info.getEnvironmentQuality()) {
+				case 1:
+					quality.setText("优");
+					quality.setTextColor(0xff16bb5c);
+					break;
+				case 2:
+					quality.setText("良");
+					quality.setTextColor(0xff08b9b7);
+					break;
+				case 3:
+					quality.setText("中");
+					quality.setTextColor(0xffde9e06);
+					break;
+				case 4:
+					quality.setText("差");
+					quality.setTextColor(0xffe4150b);
+					break;
+				default:
+					quality.setText("--");
+					quality.setTextColor(0xffe4150b);
+					break;
+				}
+				
+				TextView name=(TextView)convertView.findViewById(R.id.tv_dev_name);//设备名称
+				name.setText(mUserDevice.getDevName());
+			}else{
+				convertView = LayoutInflater.from(mContext).inflate(R.layout.adapter_uselayout, null);
+				convertView.setPadding(50, 15, 0, 10);
+//				convertView.setPadding(10, 15, 0, 10);
+				holder = new ViewHolder();
+				holder.image = (ImageView) convertView.findViewById(R.id.mImageView);
+				holder.defence_image = (ImageView) convertView.findViewById(R.id.defence_image);
+				holder.text = (TextView) convertView.findViewById(R.id.mTextView);
+				holder.open_or_close_tv = (TextView) convertView.findViewById(R.id.open_or_close_tv);
+				holder.device_list_rela = (RelativeLayout) convertView.findViewById(R.id.device_list_rela);
+				convertView.setTag(holder);
+			}
+			
+		} else {
+			if(type!=3){
+				holder = (ViewHolder) convertView.getTag();
+			}
+			
+		}
+		if(list.size()>0&&position<list.size()&&type!=3){
+//			UserDevice mUserDevice =list.get(position);
+			//添加摄像头启用
+//			int type = mUserDevice.getDevType();
 			int onOrOutLine = mUserDevice.getLightOnOrOutLine();
 			int openOrColse = mUserDevice.getSocketStates();
 			switch (type) {
 			case 1:
-				socketPos.add(position);
+				socketPos.add(position);//存储插座位置。。
 				int defenceType = mUserDevice.getDefence();
 				if(defenceType==0){
 					holder.defence_image.setBackgroundResource(R.drawable.defence_on);
@@ -97,30 +160,23 @@ public class PullToRefreshGridViewAdapter extends BaseAdapter {
 				}
 				
 				if(openOrColse==1){
-//					Bitmap mBitmap = BitmapCache.getInstance().getBitmap(R.drawable.zhuangtai_on, mContext);
-//					BitmapDrawable bd = new BitmapDrawable(mContext.getResources(), mBitmap);
 					holder.image.setImageResource(R.drawable.zhuangtai_on);
 					holder.open_or_close_tv.setText(R.string.on);
 				}else{
-//					Bitmap mBitmap = BitmapCache.getInstance().getBitmap(R.drawable.zhuangtai_off, mContext);
-//					BitmapDrawable bd = new BitmapDrawable(mContext.getResources(), mBitmap);
 					holder.image.setImageResource(R.drawable.zhuangtai_off);
 					holder.open_or_close_tv.setText(R.string.off);
 				}
 				if(onOrOutLine==1){
 					holder.defence_image.setEnabled(true);
-//					Bitmap mBitmap = BitmapCache.getInstance().getBitmap(R.drawable.chazuo_on, mContext);
-//					BitmapDrawable bd = new BitmapDrawable(mContext.getResources(), mBitmap);
 					holder.device_list_rela.setBackgroundResource(R.drawable.chazuo_on);
 				}else{
 					holder.defence_image.setEnabled(false);
-//					Bitmap mBitmap = BitmapCache.getInstance().getBitmap(R.drawable.chazuo_off, mContext);
-//					BitmapDrawable bd = new BitmapDrawable(mContext.getResources(), mBitmap);
 					holder.device_list_rela.setBackgroundResource(R.drawable.chazuo_off);
 				}
+				holder.text.setText(mUserDevice.getDevName());
 				break;
 			case 2:
-				cameraPos.add(position);
+				cameraPos.add(position);//添加摄像头位置
 				holder.defence_image.setBackgroundResource(R.drawable.defence_anxia);
 				holder.image.setVisibility(View.GONE);
 				holder.open_or_close_tv.setVisibility(View.GONE);
@@ -131,21 +187,70 @@ public class PullToRefreshGridViewAdapter extends BaseAdapter {
 				m.put(cameraId, position);
 				if(onOrOutLine==1){
 					holder.defence_image.setEnabled(true);
-//					Bitmap mBitmap = BitmapCache.getInstance().getBitmap(R.drawable.shouye_sxt_on, mContext);
-//					BitmapDrawable bd = new BitmapDrawable(mContext.getResources(), mBitmap);
 					holder.device_list_rela.setBackgroundResource(R.drawable.shouye_sxt_on);
 				}else{
 					holder.defence_image.setEnabled(false);
-//					Bitmap mBitmap = BitmapCache.getInstance().getBitmap(R.drawable.shouye_sxt_off, mContext);
-//					BitmapDrawable bd = new BitmapDrawable(mContext.getResources(), mBitmap);
 					holder.device_list_rela.setBackgroundResource(R.drawable.shouye_sxt_off);
 				}
+				holder.text.setText(mUserDevice.getDevName());
 				break;
 			default:
 				break;
 			}
 			
-			holder.text.setText(mUserDevice.getDevName());
+			//布防按钮。。
+			holder.defence_image.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View arg0) {
+					// TODO Auto-generated method stub
+					UserDevice mUserDevice = list.get(position);
+					int type = mUserDevice.getDevType();
+					int defence = mUserDevice.getDefence();
+					switch (type) {
+					case 1:
+						if(defence==0){
+							defence=1;
+						}else{
+							defence=0;
+						}
+						Intent i = new Intent();
+						i.putExtra("defencePos", position);
+						i.putExtra("defenceType", defence);
+						i.putExtra("devMac", list.get(position).getDevMac());
+						i.setAction("DEFENCE_ACTION");
+						mContext.sendBroadcast(i);
+						break;
+					case 2:
+						System.out.println("defence="+defence);
+						if(defence==0){
+							P2PHandler.getInstance().setRemoteDefence(
+									mUserDevice.getDevMac().trim(),
+									mUserDevice.getCameraPwd().trim(),
+									Constants.P2P_SET.REMOTE_DEFENCE_SET.ALARM_SWITCH_ON);
+							defence=1;
+							cameraId = mUserDevice.getDevMac().trim();
+							cameraPwd = mUserDevice.getCameraPwd().trim();
+							holder.defence_image.setBackgroundResource(R.drawable.defence_on);
+						}else{
+							P2PHandler.getInstance().setRemoteDefence(
+									mUserDevice.getDevMac().trim(),
+									mUserDevice.getCameraPwd().trim(),
+									Constants.P2P_SET.REMOTE_DEFENCE_SET.ALARM_SWITCH_OFF);
+							defence=0;
+							cameraId = mUserDevice.getDevMac().trim();
+							cameraPwd = mUserDevice.getCameraPwd().trim();
+							holder.defence_image.setBackgroundResource(R.drawable.defence_off);
+						}
+						break;
+					default:
+						break;
+					}
+					
+				}
+			});
+			
+			
 		}
 		if(position==list.size()){
 			holder.device_list_rela.setBackgroundResource(R.drawable.add_device);
@@ -154,56 +259,6 @@ public class PullToRefreshGridViewAdapter extends BaseAdapter {
 			holder.text.setVisibility(View.GONE);
 			holder.open_or_close_tv.setVisibility(View.GONE);
 		}
-		holder.defence_image.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				UserDevice mUserDevice = list.get(position);
-				int type = mUserDevice.getDevType();
-				int defence = mUserDevice.getDefence();
-				switch (type) {
-				case 1:
-					if(defence==0){
-						defence=1;
-					}else{
-						defence=0;
-					}
-					Intent i = new Intent();
-					i.putExtra("defencePos", position);
-					i.putExtra("defenceType", defence);
-					i.putExtra("devMac", list.get(position).getDevMac());
-					i.setAction("DEFENCE_ACTION");
-					mContext.sendBroadcast(i);
-					break;
-				case 2:
-					System.out.println("defence="+defence);
-					if(defence==0){
-						P2PHandler.getInstance().setRemoteDefence(
-								mUserDevice.getDevMac().trim(),
-								mUserDevice.getCameraPwd().trim(),
-								Constants.P2P_SET.REMOTE_DEFENCE_SET.ALARM_SWITCH_ON);
-						defence=1;
-						cameraId = mUserDevice.getDevMac().trim();
-						cameraPwd = mUserDevice.getCameraPwd().trim();
-						holder.defence_image.setBackgroundResource(R.drawable.defence_on);
-					}else{
-						P2PHandler.getInstance().setRemoteDefence(
-								mUserDevice.getDevMac().trim(),
-								mUserDevice.getCameraPwd().trim(),
-								Constants.P2P_SET.REMOTE_DEFENCE_SET.ALARM_SWITCH_OFF);
-						defence=0;
-						cameraId = mUserDevice.getDevMac().trim();
-						cameraPwd = mUserDevice.getCameraPwd().trim();
-						holder.defence_image.setBackgroundResource(R.drawable.defence_off);
-					}
-					break;
-				default:
-					break;
-				}
-				
-			}
-		});
 		return convertView;
 	}
 	
@@ -355,13 +410,9 @@ public class PullToRefreshGridViewAdapter extends BaseAdapter {
 		open_or_close_tv.setVisibility(View.GONE);
 		if(((UserDevice) obj).getLightOnOrOutLine()==1){
 			defence_image.setEnabled(true);
-//			Bitmap mBitmap = BitmapCache.getInstance().getBitmap(R.drawable.shouye_sxt_on, mContext);
-//			BitmapDrawable bd = new BitmapDrawable(mContext.getResources(), mBitmap);
 			device_list_rela.setBackgroundResource(R.drawable.shouye_sxt_on);
 		}else{
 			defence_image.setEnabled(false);
-//			Bitmap mBitmap = BitmapCache.getInstance().getBitmap(R.drawable.shouye_sxt_off, mContext);
-//			BitmapDrawable bd = new BitmapDrawable(mContext.getResources(), mBitmap);
 			device_list_rela.setBackgroundResource(R.drawable.shouye_sxt_off);
 		}
 		text.setText(((UserDevice) obj).getDevName());
@@ -384,7 +435,7 @@ public class PullToRefreshGridViewAdapter extends BaseAdapter {
 		UserDevice mUserDevice =list.get(index);
 		int onOrOutLine = mUserDevice.getLightOnOrOutLine();
 		int openOrColse = mUserDevice.getSocketStates();
-		if(openOrColse==1){
+		if(openOrColse==1){//插座开关。。
 //			Bitmap mBitmap = BitmapCache.getInstance().getBitmap(R.drawable.zhuangtai_on, mContext);
 //			BitmapDrawable bd = new BitmapDrawable(mContext.getResources(), mBitmap);
 			im.setImageResource(R.drawable.zhuangtai_on);
@@ -395,7 +446,7 @@ public class PullToRefreshGridViewAdapter extends BaseAdapter {
 			im.setImageResource(R.drawable.zhuangtai_off);
 			tv_open.setText(R.string.off);
 		}
-		if(onOrOutLine==1){
+		if(onOrOutLine==1){//插座是否在线
 //			Bitmap mBitmap = BitmapCache.getInstance().getBitmap(R.drawable.chazuo_on, mContext);
 //			BitmapDrawable bd = new BitmapDrawable(mContext.getResources(), mBitmap);
 			defence_image.setEnabled(true);
@@ -409,6 +460,10 @@ public class PullToRefreshGridViewAdapter extends BaseAdapter {
 		tv.setText(mUserDevice.getDevName());
     }
 	
+	/**
+	 * 获取插座的位置号。。
+	 * @return
+	 */
 	public Integer[] getSocketPos(){
 		Integer[] arr2=socketPos.toArray(new Integer[0]);
 		return arr2;

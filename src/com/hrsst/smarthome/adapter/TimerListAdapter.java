@@ -152,11 +152,11 @@ public class TimerListAdapter extends BaseAdapter{
 				sb.append(Constants.WEEKEN_STRING[li.get(j)]).append(" ");
 			}
 			if(Constants.EVERY_DAY.equals(sb.toString())){
-				holder.week_list.setText(R.string.everyday);
+				holder.week_list.setText(Constants.WeekType.EVERY_DAY_TYPE);
 			}else if(Constants.WORKING_DAY.equals(sb.toString())){
-				holder.week_list.setText(R.string.workday);
+				holder.week_list.setText(Constants.WeekType.WORKING_DAY_TYPE);
 			}else if(Constants.WEEKEN_DAY.equals(sb.toString())){
-				holder.week_list.setText(R.string.weekend);
+				holder.week_list.setText(Constants.WeekType.WEEKEN_DAY_TYPE);
 			}else{
 				holder.week_list.setText(sb.toString());
 			}
@@ -169,13 +169,13 @@ public class TimerListAdapter extends BaseAdapter{
 		    long typeTime = statTime-nowTime;
 		    long typeTime1 = endTime-nowTime;
 		    if(statTime==0&&typeTime1>0){
-		    	holder.week_list.setText(R.string.today);
+		    	holder.week_list.setText(Constants.WeekType.TODAY);
 		    }else if(endTime==0&&typeTime>0){
-		    	holder.week_list.setText(R.string.today);
+		    	holder.week_list.setText(Constants.WeekType.TODAY);
 		    }else if(typeTime>=0&&typeTime1>=0){
-		    	holder.week_list.setText(R.string.today);
+		    	holder.week_list.setText(Constants.WeekType.TODAY);
 		    }else {
-		    	holder.week_list.setText(R.string.tomorrow);
+		    	holder.week_list.setText(Constants.WeekType.TOMORROW);
 		    }
 		   
 		}

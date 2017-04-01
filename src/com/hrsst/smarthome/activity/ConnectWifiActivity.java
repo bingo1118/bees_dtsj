@@ -137,8 +137,6 @@ public class ConnectWifiActivity extends Activity implements OnClickListener {
 //		        }
 //			}
 			
-			
-			//arg1为广播发来的Intent..
 			if(arg1.getAction().equals("Constants.Action.unGetDevHeartTimePackage")){
 				byte[] datas = arg1.getExtras().getByteArray("datasByte");
 				
@@ -159,7 +157,6 @@ public class ConnectWifiActivity extends Activity implements OnClickListener {
 				}
 			}
 			
-			//收到ACK
 			if (arg1.getAction().equals("Constants.Action.unACKPack")) {
 				byte[] datas = arg1.getExtras().getByteArray("datasByte");
 				boolean crc = unPack(datas);
@@ -217,8 +214,8 @@ public class ConnectWifiActivity extends Activity implements OnClickListener {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				mSocketTCPClient.sendMsg(SendWifiOrder.secondOrder(wifiName, (byte) 0x02,seqByte));//协议3发送本地无线网账号..
-				sendSeq=2;//发送步骤？
+				mSocketTCPClient.sendMsg(SendWifiOrder.secondOrder(wifiName, (byte) 0x02,seqByte));
+				sendSeq=2;
 			}
 
 			if (arg1.getAction().equals("Constants.Action.unServerACKPack")) {
@@ -240,7 +237,8 @@ public class ConnectWifiActivity extends Activity implements OnClickListener {
 						}
 						Toast.makeText(mContext, R.string.configuration_success, Toast.LENGTH_SHORT).show();
 						udpSize = 0;
-						finish();
+//						finish();
+						startActivity(new Intent(ConnectWifiActivity.this,MainActivity.class));
 					}
 				}
 			}
@@ -299,8 +297,7 @@ public class ConnectWifiActivity extends Activity implements OnClickListener {
 			}
 		}, 1000, 1000/* 表示1000毫秒之後，每隔1000毫秒執行一次 */);
 	}
-	
-	//重发作用（1秒未收到回复）
+
 	private Handler doAction = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -397,11 +394,7 @@ public class ConnectWifiActivity extends Activity implements OnClickListener {
 		}
 	};
 
-	/**
-	 * 解包，检查数据格式
-	 * @param pk
-	 * @return
-	 */
+	// 解包
 	private boolean unPack(byte[] pk) {
 		int dataLen = pk[7];
 		seq = new byte[2];
@@ -443,9 +436,9 @@ public class ConnectWifiActivity extends Activity implements OnClickListener {
 		}
 		super.onDestroy();
 		if (mSocketTCPClient != null) {
-			mSocketTCPClient.clearClient();//SocketTCP关闭连接..
+			mSocketTCPClient.clearClient();
 		}
-		unregisterReceiver(mReceiver);//注销广播..
+		unregisterReceiver(mReceiver);
 		if(netID!=0&&wifiManager!=null){
 			wifiManager.removeNetwork(netID);
 		}
@@ -486,9 +479,6 @@ public class ConnectWifiActivity extends Activity implements OnClickListener {
 		finish();
 	}
 	
-	/**
-	 * 清除Wifi信息防止自动连接上该设备Wifi..
-	 */
 	private void removeWifi2(){
 		mSocketTCPClient.clearClient();
 		int netID = 0;
@@ -515,8 +505,8 @@ public class ConnectWifiActivity extends Activity implements OnClickListener {
 		super.onRestart();
 		wifi_name.setText(getWIfi());
 		mSocketTCPClient = SocketTCP.newInstance(Constants.WifiInfo.WIFI_IP,
-				Constants.WifiInfo.WIFI_PORT, mContext);//获取SocketTCP实例
-		mSocketTCPClient.connectServer();//SorketTCP连接
+				Constants.WifiInfo.WIFI_PORT, mContext);
+		mSocketTCPClient.connectServer();
 	}
 	
 	private String getWIfi(){

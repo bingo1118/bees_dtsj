@@ -1,34 +1,23 @@
 package com.hrsst.smarthome.fragment;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.hrsst.smarthome.dtsj.R;
-import com.hrsst.smarthome.activity.AddDeviceStepActivity;
-import com.hrsst.smarthome.activity.ApMonitorActivity;
-import com.hrsst.smarthome.activity.DeviceInfoActivity;
-import com.hrsst.smarthome.activity.IntroducedNextOneActivity;
-import com.hrsst.smarthome.adapter.ChoiceWifiAdapter;
-import com.hrsst.smarthome.adapter.PullToRefreshGridViewAdapter;
-import com.hrsst.smarthome.global.Constants;
-import com.hrsst.smarthome.mygridview.lib.PullToRefreshGridView;
-import com.hrsst.smarthome.mygridview.lib.PullToRefreshBase.OnRefreshListener;
-import com.hrsst.smarthome.net.SocketUDP;
-import com.hrsst.smarthome.order.SendServerOrder;
-import com.hrsst.smarthome.order.UnPackServer;
-import com.hrsst.smarthome.pojo.Contact;
-import com.hrsst.smarthome.pojo.DeviceStates;
-import com.hrsst.smarthome.pojo.UnPackageFromServer;
-import com.hrsst.smarthome.pojo.UserDevice;
-import com.hrsst.smarthome.thread.MainThread;
-import com.hrsst.smarthome.util.BitmapCache;
-import com.hrsst.smarthome.util.SharedPreferencesManager;
-import com.hrsst.smarthome.widget.MarqueeTextView;
-import com.p2p.core.P2PHandler;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -58,6 +47,41 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request.Method;
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.Response.ErrorListener;
+import com.android.volley.Response.Listener;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.hrsst.smarthome.AirDevInfoActivity;
+import com.hrsst.smarthome.dtsj.R;
+import com.hrsst.smarthome.activity.AddDeviceStepActivity;
+import com.hrsst.smarthome.activity.ApMonitorActivity;
+import com.hrsst.smarthome.activity.DeviceInfoActivity;
+import com.hrsst.smarthome.activity.IntroducedNextOneActivity;
+import com.hrsst.smarthome.adapter.ChoiceWifiAdapter;
+import com.hrsst.smarthome.adapter.PullToRefreshGridViewAdapter;
+import com.hrsst.smarthome.adapter.SystemMsgAdapter;
+import com.hrsst.smarthome.global.Constants;
+import com.hrsst.smarthome.mygridview.lib.PullToRefreshBase.OnRefreshListener;
+import com.hrsst.smarthome.mygridview.lib.PullToRefreshGridView;
+import com.hrsst.smarthome.net.SocketUDP;
+import com.hrsst.smarthome.order.SendServerOrder;
+import com.hrsst.smarthome.order.UnPackServer;
+import com.hrsst.smarthome.pojo.Contact;
+import com.hrsst.smarthome.pojo.DeviceStates;
+import com.hrsst.smarthome.pojo.EnvironmentInfo;
+import com.hrsst.smarthome.pojo.ShareMessages;
+import com.hrsst.smarthome.pojo.UnPackageFromServer;
+import com.hrsst.smarthome.pojo.UserDevice;
+import com.hrsst.smarthome.thread.MainThread;
+import com.hrsst.smarthome.util.BitmapCache;
+import com.hrsst.smarthome.util.SharedPreferencesManager;
+import com.hrsst.smarthome.volley.JsonArrayPostRequest;
+import com.hrsst.smarthome.widget.MarqueeTextView;
+import com.p2p.core.P2PHandler;
+
 public class MyDeviceFragment extends Fragment implements OnClickListener{
 	private View view;
 	private TextView menu;
@@ -82,6 +106,7 @@ public class MyDeviceFragment extends Fragment implements OnClickListener{
 	private ChoiceWifiAdapter mChoiceDevAdapter;
 	private int defencePos;
 	private UserDevice mUserDevice;
+	private List<UserDevice> mSmartSocketList;//@@智能插座列表
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -259,19 +284,26 @@ public class MyDeviceFragment extends Fragment implements OnClickListener{
 				UnPackageFromServer mUnPackageFromServer = UnPackServer.unGetUserDev(datas);
 				if(mUnPackageFromServer!=null){
 					mUserDeviceList = mUnPackageFromServer.userDeviceList;
-					macList = mUnPackageFromServer.macList;
-					cameraList = mUnPackageFromServer.cameraList;
+					macList = mUnPackageFromServer.macList;//插座mac列表
+					cameraList = mUnPackageFromServer.cameraList;//摄像头mac列表
 					mPullToRefreshGridViewAdapter = new PullToRefreshGridViewAdapter(mContext,mUserDeviceList);
 					mPullToRefreshGridViewAdapter.setGridView(mGridView);
 					mGridView.setAdapter(mPullToRefreshGridViewAdapter);
 					mPullToRefreshGridView.onRefreshComplete();
-					String[] contactIds = new String[cameraList.size()];
+					String[] contactIds = new String[cameraList.size()];//摄像头mac数组
 					for(int i=0;i<cameraList.size();i++){
 						contactIds[i] = cameraList.get(i);
 					}
-					byte[] orderSend =SendServerOrder.GetDeviceStatesList(macList);
-					MainThread.setByte(orderSend,0,contactIds);
+					byte[] orderSend =SendServerOrder.GetDeviceStatesList(macList);//获取设备状态使用0x02
+					MainThread.setByte(orderSend,0,contactIds);//发送获取设备状态命令
 					MainThread.refreash();
+					
+					mSmartSocketList = new ArrayList<UserDevice>();//智能插座列表。。
+					for(UserDevice u:mUserDeviceList){
+						if(u.getDevType()==1){
+							mSmartSocketList.add(u);//添加插座类型。。
+						}//@@
+					}
 				}else{
 					mUserDeviceList = new ArrayList<UserDevice>();
 					mPullToRefreshGridViewAdapter = new PullToRefreshGridViewAdapter(mContext,mUserDeviceList);
@@ -323,7 +355,7 @@ public class MyDeviceFragment extends Fragment implements OnClickListener{
 				wifiList = arg1.getExtras().getStringArrayList("count");
 				if(wifiList.size()>0){
 					new_dev_rela.setVisibility(View.GONE);
-					new_dev_num_tv.setText(R.string.new_find+wifiList.size()+""+R.string.ge_new_device);
+					new_dev_num_tv.setText(getResources().getString(R.string.new_find)+wifiList.size()+""+getResources().getString(R.string.ge_new_device));
 				}else{
 					new_dev_rela.setVisibility(View.GONE);
 				}
@@ -331,16 +363,90 @@ public class MyDeviceFragment extends Fragment implements OnClickListener{
 		}
 	};
 	
+//	private void getUserDev(){
+//		byte[] orderSend =SendServerOrder.GetUserDev(userNum);
+//		mSocketUDPClient.sendMsg(orderSend);
+//	}
+
 	/**
-	 * 获取用户设备
+	 * 获取设备列表（Volley）@@
 	 */
-	private void getUserDev(){
-		byte[] orderSend =SendServerOrder.GetUserDev(userNum);
-		mSocketUDPClient.sendMsg(orderSend);
+	private void getUserDev(){//获取设备列表@@
+		String url=Constants.HTTPGETDEV+userNum;
+//		String url="http://192.168.0.23:8080/smartHome/servlet/GetDeviceStateAction?userNum="+userNum;
+//		String url="http://119.29.224.28:51091/smartHome/servlet/GetDeviceStateAction?userNum="+userNum;
+		RequestQueue mQueue = Volley.newRequestQueue(mContext);
+		JsonObjectRequest mJsonRequest = new JsonObjectRequest(Method.GET,
+				url, 
+				null, 
+				new Listener<JSONObject>() {
+					@Override
+					public void onResponse(JSONObject jsonObject) {
+						int errorCode;
+						try {
+							errorCode = jsonObject.getInt("errorCode");
+							if(errorCode==0){
+								JSONArray array=jsonObject.getJSONArray("deviceState");
+								mUserDeviceList=new ArrayList<UserDevice>();
+								for(int i=0;i<array.length();i++){
+									JSONObject jsonObjectdev=array.getJSONObject(i);
+									UserDevice userDevice=new UserDevice();
+									userDevice.setCameraPwd(jsonObjectdev.getString("cameraPwd"));
+									userDevice.setId(i);
+									userDevice.setUserNum(userNum);
+									userDevice.setLightOnOrOutLine(jsonObjectdev.getInt("netState"));
+									userDevice.setSocketStates(jsonObjectdev.getInt("outlet"));
+									userDevice.setDefence(jsonObjectdev.getInt("defence"));
+									userDevice.setDevType(jsonObjectdev.getInt("devType"));
+									userDevice.setDevName(jsonObjectdev.getString("devName"));
+									userDevice.setDevMac(jsonObjectdev.getString("mac"));
+									userDevice.setIsShare(jsonObjectdev.getInt("isShare"));
+									userDevice.setLightStates(jsonObjectdev.getInt("light"));
+									EnvironmentInfo environmentInfo=new EnvironmentInfo();
+									JSONObject envInfo=jsonObjectdev.getJSONObject("environment");
+									environmentInfo.setEnvironmentQuality(envInfo.getInt("c_environmentQuality"));
+									environmentInfo.setHumidity(envInfo.getString("c_humidity"));
+									environmentInfo.setMethanal(envInfo.getString("c_methanal"));
+									environmentInfo.setTemperature(envInfo.getString("c_temperature"));
+									environmentInfo.setPm25(envInfo.getString("c_pm25"));
+									environmentInfo.setCo2(envInfo.getString("c_co2"));
+									userDevice.setEnvironment(environmentInfo);
+									mUserDeviceList.add(userDevice);
+								}
+								refreshGridview();//@@
+							}else if(errorCode==2){
+								mUserDeviceList=new ArrayList<UserDevice>();//@@
+								refreshGridview();//@@
+								Toast.makeText(getActivity(), R.string.no_dev, Toast.LENGTH_SHORT).show();
+							}else{
+								mUserDeviceList=new ArrayList<UserDevice>();//@@
+								refreshGridview();//@@
+								Toast.makeText(getActivity(), R.string.get_dev_fail, Toast.LENGTH_SHORT).show();
+							}
+						} catch (JSONException e) {
+							// TODO 自动生成的 catch 块
+							e.printStackTrace();
+							mUserDeviceList=new ArrayList<UserDevice>();//@@
+							refreshGridview();//@@
+							Toast.makeText(getActivity(), R.string.error, Toast.LENGTH_SHORT).show();
+						}
+						
+						
+					}
+				}, 
+				new ErrorListener() {
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						mUserDeviceList=new ArrayList<UserDevice>();//@@
+						refreshGridview();//@@
+						Toast.makeText(getActivity(), R.string.error, Toast.LENGTH_SHORT).show();
+					}
+				});
+		mQueue.add(mJsonRequest);
 	}
 	
 	private void init(){
-		Bitmap mBitmap = BitmapCache.getInstance().getBitmap(R.drawable.yetoutu_dt, mContext);
+		Bitmap mBitmap = BitmapCache.getInstance().getBitmap(R.drawable.yetoutu, mContext);
 		BitmapDrawable bd = new BitmapDrawable(mContext.getResources(), mBitmap);
 		ImageView main_image = (ImageView) view.findViewById(R.id.main_image);
 		main_image.setBackground(bd);
@@ -375,21 +481,22 @@ public class MyDeviceFragment extends Fragment implements OnClickListener{
 				setTimerdoAction(doAction,mTimer);
 			}
 		});
+		//点击事件。。
 		mGridView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int pos,
 					long arg3) {
 				// TODO Auto-generated method stub
-				List<UserDevice> mUserDevice = new ArrayList<UserDevice>();
+				mSmartSocketList = new ArrayList<UserDevice>();//智能插座列表。。
 				for(UserDevice u:mUserDeviceList){
 					if(u.getDevType()==1){
-						mUserDevice.add(u);
+						mSmartSocketList.add(u);//添加插座类型。。
 					}
 				}
 				if(pos==mUserDeviceList.size()){
 					Intent intent = new Intent(mContext,AddDeviceStepActivity.class);
-					intent.putExtra("devList", (Serializable)mUserDevice);
+					intent.putExtra("devList", (Serializable)mSmartSocketList);
 					intent.putExtra("cameraList", (Serializable)cameraList);
 					startActivity(intent);
 				}else{
@@ -425,8 +532,16 @@ public class MyDeviceFragment extends Fragment implements OnClickListener{
 							monitor.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							mContext.startActivity(monitor);
 						}else{
-							Toast.makeText(mContext, R.string.device_offline, Toast.LENGTH_SHORT).show();
+							Toast.makeText(mContext,R.string.device_offline, Toast.LENGTH_SHORT).show();
 						}
+						break;
+					case 3:
+							Intent monitor = new Intent();
+							monitor.setClass(mContext, AirDevInfoActivity.class);
+							monitor.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+							monitor.putExtra("info",itemUserDevice);
+							mContext.startActivity(monitor);
+						
 						break;
 					default:
 						break;
@@ -515,14 +630,8 @@ public class MyDeviceFragment extends Fragment implements OnClickListener{
 			mContext.sendBroadcast(i);
 			break;
 		case R.id.add_device:
-			List<UserDevice> mUserDevice = new ArrayList<UserDevice>();
-			for(UserDevice u:mUserDeviceList){
-				if(u.getDevType()==1){
-					mUserDevice.add(u);
-				}
-			}
 			Intent intent = new Intent(mContext,AddDeviceStepActivity.class);
-			intent.putExtra("devList", (Serializable)mUserDevice);//@@
+			intent.putExtra("devList", (Serializable)mSmartSocketList);
 			startActivity(intent);
 			break;
 		case R.id.new_dev_rela:
@@ -560,7 +669,7 @@ public class MyDeviceFragment extends Fragment implements OnClickListener{
 		List<UserDevice> mUserDeviceAdapterList = new ArrayList<UserDevice>();
 		if(null!=mUserDeviceList&&mUserDeviceList.size()>0){
 			//添加摄像头启用
-			Integer[] socketPos = mPullToRefreshGridViewAdapter.getSocketPos();
+			Integer[] socketPos = mPullToRefreshGridViewAdapter.getSocketPos();//获取插座的列表中位置。。
 			if(null!=socketPos&&socketPos.length>0){
 				for(int i=0;i<listM.size();i++){
 					Map<String,DeviceStates> m = listM.get(i);
@@ -665,5 +774,34 @@ public class MyDeviceFragment extends Fragment implements OnClickListener{
 			}
 		}
 	};
+	
+	/**
+	 * 刷新GridView@@
+	 */
+	private void refreshGridview() {
+		mPullToRefreshGridViewAdapter = new PullToRefreshGridViewAdapter(mContext,mUserDeviceList);
+		mPullToRefreshGridViewAdapter.setGridView(mGridView);
+		mGridView.setAdapter(mPullToRefreshGridViewAdapter);
+		mPullToRefreshGridView.onRefreshComplete();
+		mSmartSocketList = new ArrayList<UserDevice>();//智能插座列表。。
+		cameraList=new ArrayList<String>();//摄像机mac地址表@@
+		for(UserDevice u:mUserDeviceList){
+			if(u.getDevType()==1){
+				mSmartSocketList.add(u);//添加插座类型。。
+			}
+			if(u.getDevType()==2){
+				cameraList.add(u.getDevMac());
+			}//@@
+	    }
+		
+		//获取摄像头状态
+		String[] contactIds = new String[cameraList.size()];//摄像头mac数组
+		for(int i=0;i<cameraList.size();i++){
+			contactIds[i] = cameraList.get(i);
+		}
+		MainThread.setByte(0,contactIds);//发送获取设备状态命令
+		MainThread.refreash();
+	}
+
 
 }

@@ -51,9 +51,9 @@ public class ActionComnfigerActivity extends Activity {
 					Intent intent = new Intent(ActionComnfigerActivity.this,
 							IntroducedNextOneActivity.class);
 					startActivity(intent);
-					finish();
+//					finish();
 				}else{
-					Toast.makeText(mContext, getResources().getString(R.string.actionComnfigerActivity_open_wifi), 1).show();
+					Toast.makeText(mContext, R.string.actionComnfigerActivity_open_wifi, 1).show();
 					startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
 				}
 				
@@ -67,10 +67,7 @@ public class ActionComnfigerActivity extends Activity {
 		super.onDestroy();
 		BitmapCache.getInstance().clearCache();
 	}
-	/**
-	 * ¼ì²éwifi
-	 * @return
-	 */
+	
 	private boolean checkWifi() {  
 	    boolean isWifiConnect = false;  
 	    ConnectivityManager cm = (ConnectivityManager)mContext.getSystemService(Context.CONNECTIVITY_SERVICE);  

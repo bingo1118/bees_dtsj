@@ -38,7 +38,7 @@ public class ExperienceFragment extends Fragment implements OnClickListener{
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
 		mContext = getActivity();
-		Bitmap mBitmap = BitmapCache.getInstance().getBitmap(R.drawable.zhineng_dt,mContext);
+		Bitmap mBitmap = BitmapCache.getInstance().getBitmap(R.drawable.zhineng,mContext);
 		BitmapDrawable bd = new BitmapDrawable(mContext.getResources(), mBitmap);
 		experience_image = (ImageView)view.findViewById(R.id.experience_image);
 		experience_image.setImageDrawable(bd);

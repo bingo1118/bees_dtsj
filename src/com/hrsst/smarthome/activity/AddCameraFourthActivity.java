@@ -104,7 +104,7 @@ public class AddCameraFourthActivity extends Activity{
 						 finish();
 					 }
 				 }else{
-					 Toast.makeText(mContext, R.string.addcamerafourthactivity_save_fail, Toast.LENGTH_SHORT).show();
+					 Toast.makeText(mContext,R.string.addcamerafourthactivity_save_fail, Toast.LENGTH_SHORT).show();
 					 if(null!=dialog_loading){
 						dialog_loading.dismiss();
 						dialog_loading = null;
@@ -175,6 +175,7 @@ public class AddCameraFourthActivity extends Activity{
 		camera_pwd_et = (EditText) findViewById(R.id.camera_pwd_et);
 		camera_name_et = (EditText) findViewById(R.id.camera_name_et);
 		camera_name_et.setText(contactId);
+		camera_name_et.setSelection(contactId.length());//@@
 		
 		add_camera_action_four.setOnClickListener(new OnClickListener() {
 			

@@ -46,7 +46,7 @@ public class PushDemoReceiver extends BroadcastReceiver {
                 payload = bundle.getByteArray("payload");
                 if(payload!=null&&payload.length>8){
                 	int type = payload[0];
-                    if(type==1){
+                    if(type==1){//报警@@
                     	regFilter();
                     	if(payload.length>12){
                     		byte[] mac = new byte[12];
@@ -62,7 +62,7 @@ public class PushDemoReceiver extends BroadcastReceiver {
                     		mSocketUDPClient.sendMsg(orderSend);
                     	}
                     }
-                    if(type==2){
+                    if(type==2){//共享设备。。
                     	byte[] receive = new byte[payload.length-1];
                     	for(int i = 0;i<receive.length;i++){
                     		receive[i] = payload[i+1];
@@ -106,8 +106,9 @@ public class PushDemoReceiver extends BroadcastReceiver {
 
         contentView.setImageViewResource(R.id.share_icon,
                 R.drawable.notification);
-        contentView.setTextViewText(R.id.share_text, toUserNum+context.getString(R.string.get_device_share_massage));
-
+//        contentView.setTextViewText(R.id.share_text, toUserNum+context.getString(R.string.get_device_share_massage));
+//        contentView.setTextViewText(R.id.share_text, getfromusername(ss)+"发来设备共享消息");
+        contentView.setTextViewText(R.id.share_text, context.getString(R.string.get_device_share_massage));
         //通知消息与Intent关联
         Intent it=new Intent(context,SystemMessageActivity.class);
         it.putExtra("toUserNum", toUserNum);
@@ -122,7 +123,19 @@ public class PushDemoReceiver extends BroadcastReceiver {
         nm.notify(NOTIFICATION_ID, mNotification);
     } 
     
-    private void regFilter() {
+    private String getfromusername(String str) {
+    	String str2="";
+    	if(str != null && !"".equals(str)){
+    	for(int i=0;i<str.length();i++){
+    	if(str.charAt(i)>=48 && str.charAt(i)<=57){
+    	str2+=str.charAt(i);
+    			}
+    		}
+    	}
+		return str2;
+	}
+
+	private void regFilter() {
 		IntentFilter filter = new IntentFilter();
 		filter.addAction("Constants.Action.unIfUserOwnCamera");
 		MyApp.app.registerReceiver(mReceiver, filter);
@@ -132,7 +145,7 @@ public class PushDemoReceiver extends BroadcastReceiver {
 
 		@Override
 		public void onReceive(Context arg0, Intent arg1) {
-			// TODO Auto-generated method stub
+			//收到广播，是否用户拥有摄像机。。
 			if(arg1.getAction().equals("Constants.Action.unIfUserOwnCamera")){
 				byte[] datas = arg1.getExtras().getByteArray("datasByte");
 				UnPackageFromServer mUnPackageFromServer = UnPackServer.unIfUserOwnCamera(datas);

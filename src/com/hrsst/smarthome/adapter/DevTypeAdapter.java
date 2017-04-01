@@ -89,6 +89,18 @@ public class DevTypeAdapter extends BaseAdapter{
 			holder.dev_type_iamge_logo.setImageDrawable(bd4);
 			holder.dev_type_name.setText(R.string.devicelistadapter_ranqi);
 			break;
+		case 5:
+			Bitmap mBitmap5 = BitmapCache.getInstance().getBitmap(R.drawable.sclb_sj_dev,mContext);
+			BitmapDrawable bd5 = new BitmapDrawable(mContext.getResources(), mBitmap5);
+			holder.dev_type_iamge_logo.setImageDrawable(bd5);
+			holder.dev_type_name.setText(R.string.shuijin);
+			break;//@@
+		case 6:
+			Bitmap mBitmap6 = BitmapCache.getInstance().getBitmap(R.drawable.sclb_ykq,mContext);
+			BitmapDrawable bd6 = new BitmapDrawable(mContext.getResources(), mBitmap6);
+			holder.dev_type_iamge_logo.setImageDrawable(bd6);
+			holder.dev_type_name.setText(R.string.ykq);
+			break;//@@
 		default:
 			break;
 		}

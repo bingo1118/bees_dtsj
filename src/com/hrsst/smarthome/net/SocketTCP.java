@@ -28,7 +28,7 @@ public class SocketTCP {
 
 	private int port;
 
-	private boolean onGoinglistner = true;//保持接受消息状态位..
+	private boolean onGoinglistner = true;
 
 	private Context mContext;
 
@@ -100,9 +100,7 @@ public class SocketTCP {
 			e.printStackTrace();
 		}
 	}
-	/**
-	 * 接收消息循环
-	 */
+
 	public void acceptMsg() {
 		new Thread(new Runnable() {
 			@Override
@@ -140,12 +138,6 @@ public class SocketTCP {
 		onGoinglistner = false;
 	}
 	
-	/**
-	 * 判断设备返回的消息，广播回活动中..
-	 * @param cmd
-	 * @param result
-	 * @param mContext
-	 */
 	private void cmd2(int cmd,byte[] result,Context mContext){
 		switch (cmd) {
 		case 129://81 配置设备状态回复包

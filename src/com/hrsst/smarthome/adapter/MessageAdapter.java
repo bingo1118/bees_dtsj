@@ -87,6 +87,18 @@ public class MessageAdapter extends BaseAdapter{
 			holder.message_adapter_image.setImageDrawable(bd4);
 			holder.alarm_dev_name.setText(R.string.devicelistadapter_ranqi);
 			break;
+		case 5:
+			Bitmap mBitmap5 = BitmapCache.getInstance().getBitmap(R.drawable.bjxx_tb_sj,mContext);
+			BitmapDrawable bd5 = new BitmapDrawable(mContext.getResources(), mBitmap5);
+			holder.message_adapter_image.setImageDrawable(bd5);
+			holder.alarm_dev_name.setText(R.string.shuijin);
+			break;//@@
+		case 6:
+			Bitmap mBitmap6 = BitmapCache.getInstance().getBitmap(R.drawable.bjxx_tb_ykq,mContext);
+			BitmapDrawable bd6 = new BitmapDrawable(mContext.getResources(), mBitmap6);
+			holder.message_adapter_image.setImageDrawable(bd6);
+			holder.alarm_dev_name.setText(R.string.ykq);
+			break;//@@
 		default:
 			break;
 		}

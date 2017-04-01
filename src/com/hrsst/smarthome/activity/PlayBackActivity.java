@@ -421,7 +421,7 @@ public class PlayBackActivity extends BasePlayBackActivity implements
 		if ((System.currentTimeMillis() - exitTime) > 2000) {
 			// Toast.makeText(getApplicationContext(),R.string.Press_again_exit,
 			// Toast.LENGTH_SHORT).show();
-			Toast.makeText(mContext, R.string.try_again_exit_play, Toast.LENGTH_SHORT).show();
+			Toast.makeText(mContext,R.string.try_again_exit_play, Toast.LENGTH_SHORT).show();
 			exitTime = System.currentTimeMillis();
 		} else {
 			reject();

@@ -118,7 +118,7 @@ public class PhoneFindPwdActivity extends Activity implements OnClickListener {
 						&& pwdNumStr.equals(pwdNum1Str)) {
 					ifExit(phoneNumStr);
 				} else {
-					Toast.makeText(mContext, R.string.two_psw_diffrence, Toast.LENGTH_SHORT).show();
+					Toast.makeText(mContext,R.string.two_psw_diffrence, Toast.LENGTH_SHORT).show();
 				}
 			}
 			break;
@@ -128,7 +128,7 @@ public class PhoneFindPwdActivity extends Activity implements OnClickListener {
 				SMSSDK.submitVerificationCode("86", phoneNumStr, codeNumStr);
 				find.setEnabled(false);
 			} else {
-				Toast.makeText(mContext, R.string.verification_code_error, Toast.LENGTH_SHORT).show();
+				Toast.makeText(mContext,R.string.vfcode_error, Toast.LENGTH_SHORT).show();
 			}
 			break;
 		default:
@@ -162,7 +162,7 @@ public class PhoneFindPwdActivity extends Activity implements OnClickListener {
 				find(phoneNumStr, pwdNumStr);
 			}
 			if (intent.getAction().equals("VERIFY_FALSE")) {
-				Toast.makeText(mContext, R.string.verification_code_error, Toast.LENGTH_SHORT).show();
+				Toast.makeText(mContext, R.string.vfcode_error, Toast.LENGTH_SHORT).show();
 				phoneEt.setEnabled(true);
 				phonePwd.setEnabled(true);
 				phonePwd1.setEnabled(true);
@@ -214,7 +214,7 @@ public class PhoneFindPwdActivity extends Activity implements OnClickListener {
 								}
 								if (null != obj && obj.length() > 0
 										&& obj.equals("false")) {
-									Toast.makeText(mContext, R.string.find_psw_fail, Toast.LENGTH_SHORT)
+									Toast.makeText(mContext,R.string.find_psw_fail, Toast.LENGTH_SHORT)
 											.show();
 									mTimer.cancel();
 									count = 0;
@@ -287,7 +287,7 @@ public class PhoneFindPwdActivity extends Activity implements OnClickListener {
 								String obj = response.get(0).toString();
 								if (null != obj && obj.length() > 0
 										&& obj.equals("no")) {
-									Toast.makeText(mContext, R.string.phone_not_exist, Toast.LENGTH_SHORT)
+									Toast.makeText(mContext,R.string.phone_not_exist, Toast.LENGTH_SHORT)
 											.show();
 								}
 								if (null != obj && obj.length() > 0

@@ -85,7 +85,7 @@ public class MainThread {
 			mSocketUDPClient.sendMsg(orderSend);
 		}
 		if(null!=contactIds&&contactIds.length>0){
-			P2PHandler.getInstance().getFriendStatus(contactIds);
+			P2PHandler.getInstance().getFriendStatus(contactIds);//获取摄像头状态？
 		}
 	}
 	
@@ -145,16 +145,16 @@ public class MainThread {
 		MainThread.count = count;
 		MainThread.contactIds = contactIds;
 	}
+	public static void setByte(int count,String[] contactIds){
+		MainThread.count = count;
+		MainThread.contactIds = contactIds;
+	}//@@
 	
 	public static void setOpenThread(boolean isOpenThread) {
 		MainThread.isOpenThread = isOpenThread;
 	}
 
 	private UpdateInfo mUpdateInfo = new UpdateInfo();
-	/**
-	 * 检查版本更新
-	 * @param last_check_update_time
-	 */
 	public void checkUpdate(long last_check_update_time) {
 		try {
 			long now_time = System.currentTimeMillis();
@@ -219,10 +219,7 @@ public class MainThread {
 //			MyApp.app.sendBroadcast(i);
 		} 
 	}
-	/**
-	 * 获取当前版本号
-	 * @return
-	 */
+	
 	public int getlocalVersion(){
  		int localversion = 0;
  		try {

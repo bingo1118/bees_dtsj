@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
-<string name="app_name">东泰盛居</string>
+	<string name="app_name">东泰盛居</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="id_name">邮箱/手机号码</string>
@@ -628,6 +628,9 @@
      <string name="alarmactivity_menci">门磁</string>
      <string name="alarmactivity_hongwai">红外探测器</string>
      <string name="alarmactivity_keranqiti">可燃气体探测器</string>
+     <string name="air_dev">环境探测器</string>
+    <string name="water_dev">水禁</string>
+    <string name="controler_dev">万能遥控器</string>
      <string name="alarmactivity_alarm_time">报警时间:</string>
      <string name="alarmactivity_de">的</string>
      <string name="alarmactivity_issue_an_alert">发出报警消息</string>
@@ -636,8 +639,12 @@
      <string name="input_string_too_long">输入的文字过长</string>
      <string name="list_of_yangan">烟感列表</string>
      <string name="list_of_menci">门磁列表</string>
-     <string name="list_of_keranqiti">可燃气体探测器列表</string>
-     <string name="list_of_hongwai">红外探测器列表</string>
+     <string name="list_of_keranqiti">燃气探测器列表</string>
+    <string name="list_of_hongwai">红外探测器列表</string>
+     <string name="list_of_shuijin">水禁列表</string>
+     <string name="list_of_ykq">万能遥控器列表</string>
+     <string name="no_data">无数据</string>
+     <string name="error">错误</string>
      <string name="successful_operation">操作成功</string>
      <string name="have_not_setting_item">无此设置选项</string>
      <string name="this_device_dont_support_preset_position">该设备不支持预置位</string>
@@ -722,7 +729,7 @@
      <string name="close">关闭</string>
      <string name="open_time">开启时段</string>
      <string name="open">开启</string>
-     <string name="get_device_share_massage">发来设备共享消息</string>
+     <string name="get_device_share_massage">您有新的设备共享消息</string>
      <string name="clean_fail">清空失败</string>
      <string name="clean_success">清空成功</string>
      <string name="is_clean_all_data">是否清空所有数据</string>
@@ -779,4 +786,24 @@
      <string name="device_off">关</string>
      <string name="tomorrow">明天</string>
      <string name="today">今天</string>
+     <string name="connected_with">已与该摄像头绑定：</string>
+     <string name="smoke_detection">烟感探测器</string>
+    <string name="doorsensor">门磁探测器</string>
+    <string name="gas_detection">燃气探测器</string>
+    <string name="infrared_detection">红外探测器</string>
+    <string name="shuijin">水禁</string>
+    <string name="ykq">万能遥控器</string>
+    <string name="bind">绑定</string>
+    <string name="name_too_long">输入名称过长，请重新输入</string>
+    <string name="no_dev">您没有任何设备</string>
+     <string name="get_dev_fail">获取数据失败</string>
+     <string name="will_over">很抱歉,程序出现异常,即将退出.</string>
+     <string name="add_air_success">环境探测器添加成功</string>
+     <string name="add_one">请点击以下"选择智能插座"，前往插座列表选择一个需与设备配对的智能插座。选择完成后返回，点击下一步。</string>
+     <string name="add_two">请在下面的输入框中输入您希望将设备所安放的位置。输入完成后，点击下一步。</string>
+	<string name="add_three_sj">将感应器的两个金属触头同时接触水面，点击下一步</string>
+    <string name="add_three_ykq">点击遥控器的报警按钮，点击下一步</string>
+    <string name="dev_name">设备名称：</string>
+    <string name="add_air_dev">"      开启设备后，长按设备上的按钮2-4秒并松开，扫描屏幕上的二维码获取设备MAC号，并填写设备名称，点击下一步即可。"</string>
+    <string name="set_buzzer">设置摄像机蜂鸣器</string>
 </resources>

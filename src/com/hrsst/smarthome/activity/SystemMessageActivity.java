@@ -37,6 +37,9 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.TypedValue;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 public class SystemMessageActivity extends Activity{
 	private Context mContext;
@@ -46,6 +49,7 @@ public class SystemMessageActivity extends Activity{
 	private SystemMsgAdapter sysAdapter;
 	private SocketUDP mSocketUDPClient;
 	private int messageId;
+	private ProgressBar progressBar;//@@
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +63,7 @@ public class SystemMessageActivity extends Activity{
 	}
 	private void init() {
 		// TODO Auto-generated method stub
+		progressBar=(ProgressBar)findViewById(R.id.progressbar);//@@
 		system_msg_list = (SwipeMenuListView) findViewById(R.id.system_msg_list);
 		getShareMsgs(-1,toUserNum);
 		mSocketUDPClient = SocketUDP.newInstance(Constants.SeverInfo.SERVER
@@ -160,12 +165,8 @@ public class SystemMessageActivity extends Activity{
 		}
 	};
 	
-	/**
-	 * 获取分享信息..
-	 * @param id
-	 * @param toUserNum
-	 */
 	private void getShareMsgs(int id,String toUserNum){
+		progressBar.setVisibility(View.VISIBLE);//@@
 		RequestQueue mQueue = Volley.newRequestQueue(mContext);
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("id", id+"");
@@ -197,12 +198,17 @@ public class SystemMessageActivity extends Activity{
 						sysAdapter = new SystemMsgAdapter(mContext, li);
 						system_msg_list.setAdapter(sysAdapter);
 						sysAdapter.notifyDataSetChanged();//189 31 26
+						progressBar.setVisibility(View.GONE);//@@
+						if(li.size()==0){
+							Toast.makeText(mContext, R.string.no_data, Toast.LENGTH_SHORT).show();
+						}//@@
 					}
 				}, 
 				new ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						// TODO Auto-generated method stub
+						progressBar.setVisibility(View.GONE);//@@
+						Toast.makeText(mContext, R.string.error, Toast.LENGTH_SHORT).show();//@@
 					}
 				}, 
 				map);

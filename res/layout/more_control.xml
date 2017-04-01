@@ -93,7 +93,51 @@
 	  	        android:layout_width="wrap_content"
 	  	        android:layout_height="wrap_content"
 	  	        android:textColor="#000000"
-	  	        android:text="@string/alarmactivity_keranqiti"
+	  	         android:text="@string/alarmactivity_keranqiti"
+	  	        android:layout_centerInParent="true"
+	  	        android:textSize="18sp"
+	  	        />
+	  	    <ImageView 
+		       android:layout_width="match_parent"
+		       android:src="@drawable/list_item_line"
+	      	   android:layout_height="wrap_content"
+	      	   android:layout_alignParentBottom="true"
+		       />
+	  	</RelativeLayout>
+	  	
+        <RelativeLayout
+	  	    android:id="@+id/sj_tv_name" 
+	  	    android:layout_width="match_parent"
+	  	    android:layout_height="40dp"
+	  	    android:layout_below="@id/gas_tv_name"
+	  	    >
+	  	    <TextView 
+	  	        android:layout_width="wrap_content"
+	  	        android:layout_height="wrap_content"
+	  	        android:textColor="#000000"
+	  	        android:text="@string/shuijin"
+	  	        android:layout_centerInParent="true"
+	  	        android:textSize="18sp"
+	  	        />
+	  	    <ImageView 
+		       android:layout_width="match_parent"
+		       android:src="@drawable/list_item_line"
+	      	   android:layout_height="wrap_content"
+	      	   android:layout_alignParentBottom="true"
+		       />
+	  	</RelativeLayout>
+	  	
+        <RelativeLayout
+	  	    android:id="@+id/ykq_tv_name" 
+	  	    android:layout_width="match_parent"
+	  	    android:layout_height="40dp"
+	  	    android:layout_below="@id/sj_tv_name"
+	  	    >
+	  	    <TextView 
+	  	        android:layout_width="wrap_content"
+	  	        android:layout_height="wrap_content"
+	  	        android:textColor="#000000"
+	  	        android:text="@string/ykq"
 	  	        android:layout_centerInParent="true"
 	  	        android:textSize="18sp"
 	  	        />
@@ -109,7 +153,7 @@
 	  	    android:id="@+id/dev_share" 
 	  	    android:layout_width="match_parent"
 	  	    android:layout_height="40dp"
-	  	    android:layout_below="@id/gas_tv_name"
+	  	    android:layout_below="@id/ykq_tv_name"
 	  	    >
 	  	    <TextView 
 	  	        android:layout_width="wrap_content"

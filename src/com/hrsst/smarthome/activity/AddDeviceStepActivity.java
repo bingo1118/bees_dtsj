@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.hrsst.smarthome.AddAirDeviceActivity;
 import com.hrsst.smarthome.dtsj.R;
 import com.hrsst.smarthome.adapter.DeviceListAdapter;
 import com.hrsst.smarthome.global.Constants;
@@ -35,7 +36,7 @@ public class AddDeviceStepActivity extends Activity {
 	private PullToRefreshGridView mPullToRefreshGridView;
 	private GridView mGridView;
 	private ViewGroup contentContainer;
-	private List<UserDevice> mUserDeviceList;
+	private List<UserDevice> mUserDeviceList;//设备列表。。
 	private SocketUDP mSocketUDP;
 	private String userNum;
 	private List<String> cameraList;
@@ -88,7 +89,7 @@ public class AddDeviceStepActivity extends Activity {
 						Intent i =new Intent(mContext,AddCameraFirstActivity.class);
 						i.putExtra("cameraList",
 								(Serializable) cameraList);
-						startActivity(i);
+						startActivity(i);//如果注册过技威则跳转到添加界面。。
 						finish();
 					}
 				}
@@ -105,7 +106,7 @@ public class AddDeviceStepActivity extends Activity {
 		mPullToRefreshGridView = (PullToRefreshGridView) findViewById(R.id.pull_refresh_grid);
 		mGridView = mPullToRefreshGridView.getRefreshableView();
 		List<String> list = new ArrayList<String>();
-		for (int i = 0; i < 6; i++) {
+		for (int i = 0; i < 9; i++) {
 			list.add("i" + i);
 		}
 		mGridView.setAdapter(new DeviceListAdapter(mContext, list));
@@ -116,6 +117,7 @@ public class AddDeviceStepActivity extends Activity {
 						mPullToRefreshGridView.onRefreshComplete();
 					}
 				});
+		//点击事件。。
 		mGridView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -123,25 +125,25 @@ public class AddDeviceStepActivity extends Activity {
 					int position, long arg3) {
 				// TODO Auto-generated method stub
 				switch (position) {
-				case 0:
+				case 0://智能插座
 					Intent intent = new Intent(mContext,
 							ActionComnfigerActivity.class);
 					startActivity(intent);
-					finish();
+//					finish();
 					break;
-				case 1:
+				case 1://烟感
 					if (mUserDeviceList.size() > 0) {
 						Intent intent1 = new Intent(mContext,
 								AddFireLinkOneActivity.class);
 						intent1.putExtra("devList",
 								(Serializable) mUserDeviceList);
 						startActivity(intent1);
-						finish();
+//						finish();
 					} else {
-						Toast.makeText(mContext, R.string.adddevicestepactivity_add_smart_socket_first, Toast.LENGTH_SHORT).show();
+						Toast.makeText(mContext,R.string.adddevicestepactivity_add_smart_socket_first, Toast.LENGTH_SHORT).show();
 					}
 					break;
-				case 2:
+				case 2://无线门磁
 					if (mUserDeviceList.size() > 0) {
 						Intent intent2 = new Intent(mContext,
 								AddDoorsensorOneActivity.class);
@@ -149,12 +151,12 @@ public class AddDeviceStepActivity extends Activity {
 								(Serializable) mUserDeviceList);
 						intent2.putExtra("type", 2);
 						startActivity(intent2);
-						finish();
+//						finish();
 					} else {
-						Toast.makeText(mContext, R.string.adddevicestepactivity_add_smart_socket_first, Toast.LENGTH_SHORT).show();
+						Toast.makeText(mContext,R.string.adddevicestepactivity_add_smart_socket_first, Toast.LENGTH_SHORT).show();
 					}
 					break;
-				case 3:
+				case 3://红外探测器
 					if (mUserDeviceList.size() > 0) {
 						Intent intent4 = new Intent(mContext,
 								AddDoorsensorOneActivity.class);
@@ -162,13 +164,13 @@ public class AddDeviceStepActivity extends Activity {
 								(Serializable) mUserDeviceList);
 						intent4.putExtra("type", 4);
 						startActivity(intent4);
-						finish();
+//						finish();
 					}else{
 						Toast.makeText(mContext, R.string.adddevicestepactivity_add_smart_socket_first, Toast.LENGTH_SHORT).show();
 					}
 					
 					break;
-				case 4:
+				case 4://燃气探测器
 					if (mUserDeviceList.size() > 0) {
 						Intent intent5 = new Intent(mContext,
 								AddDoorsensorOneActivity.class);
@@ -176,14 +178,53 @@ public class AddDeviceStepActivity extends Activity {
 								(Serializable) mUserDeviceList);
 						intent5.putExtra("type", 5);
 						startActivity(intent5);
-						finish();
+//						finish();
 					}else{
 						Toast.makeText(mContext, R.string.adddevicestepactivity_add_smart_socket_first, Toast.LENGTH_SHORT).show();
 					}
 					
 					break;
-				case 5:
-					byte[] orderSend =SendServerOrder.ifRegisterInyoo(userNum);
+				case 5://水禁
+					if (mUserDeviceList.size() > 0) {
+						Intent intent6 = new Intent(mContext,
+								AddDoorsensorOneActivity.class);
+						intent6.putExtra("devList",
+								(Serializable) mUserDeviceList);
+						intent6.putExtra("type", 6);
+						startActivity(intent6);
+//						finish();
+					}else{
+						Toast.makeText(mContext, "请先添加智能插座", Toast.LENGTH_SHORT).show();
+					}
+					
+					break;
+				case 6://万能遥控器
+					if (mUserDeviceList.size() > 0) {
+						Intent intent7 = new Intent(mContext,
+								AddDoorsensorOneActivity.class);
+						intent7.putExtra("devList",
+								(Serializable) mUserDeviceList);
+						intent7.putExtra("type", 7);
+						startActivity(intent7);
+//						finish();
+					}else{
+						Toast.makeText(mContext, R.string.adddevicestepactivity_add_smart_socket_first, Toast.LENGTH_SHORT).show();
+					}
+					
+					break;
+				case 7://环境探测器
+//					if (mUserDeviceList.size() > 0) {
+						String userNumStr = SharedPreferencesManager.getInstance().getData(mContext, Constants.UserInfo.USER_ID);
+						Intent intent8 = new Intent(mContext,AddAirDeviceActivity.class);
+						startActivity(intent8);
+//						finish();
+//					}else{
+//						Toast.makeText(mContext, "请先添加智能插座", Toast.LENGTH_SHORT).show();
+//					}
+					
+					break;
+				case 8://摄像机
+					byte[] orderSend =SendServerOrder.ifRegisterInyoo(userNum);//是否注册技威。。
 					mSocketUDP.sendMsg(orderSend);
 //					Intent monitor = new Intent();
 //					monitor.setClass(mContext, CallActivity.class);

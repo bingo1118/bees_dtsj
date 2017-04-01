@@ -61,7 +61,6 @@ public class IntroducedNextOneActivity extends Activity {
 		wifi_name.setText(getResources().getString(R.string.introducedNextOneActivity_current_wifi)+getWIfi());
 		wifi_name.setTextColor(getResources().getColor(R.color.wifi_change_color));
 		regFilter();
-		//创建SocketUdp实例..
 		mSocketUDPClient = SocketUDP.newInstance(
 				Constants.SeverInfo.SERVER, Constants.SeverInfo.PORT);
 		mSocketUDPClient.startAcceptMessage();
@@ -81,23 +80,19 @@ public class IntroducedNextOneActivity extends Activity {
 				String wifiName = getWIfi().replaceAll("\"", "");
 				String wifiPwd = wifi_pwd.getText().toString();
 				if(wifiName==null||wifiPwd==null){
-					Toast.makeText(mContext, getResources().getString(R.string.introducedNextOneActivity_wifi_cannot_null), 1).show();
+					Toast.makeText(mContext, R.string.introducedNextOneActivity_wifi_cannot_null, 1).show();
 					return;
 				}
 				if(wifiName.length()==0||wifiPwd.length()==0){
-					Toast.makeText(mContext,getResources().getString(R.string.introducedNextOneActivity_wifi_cannot_null), 1).show();
+					Toast.makeText(mContext, R.string.introducedNextOneActivity_wifi_cannot_null, 1).show();
 					return;
 				}
-				//如果密码正确..
 				byte[] orderSend = SendServerOrder.GetServerTimePackage();
 				mSocketUDPClient.sendMsg(orderSend);
 			}
 		});
 	}
 	
-	/**
-	 * 注册广播接收器..
-	 */
 	private void regFilter() {
 		IntentFilter filter = new IntentFilter();
 		filter.addAction("Constants.Action.unGetServerTimePackage");
@@ -118,11 +113,11 @@ public class IntroducedNextOneActivity extends Activity {
 					String wifiName= getWIfi().replaceAll("\"", "");
 					String wifiPwd = wifi_pwd.getText().toString().trim();
 					if(wifiName==null||wifiPwd==null){
-						Toast.makeText(mContext, getResources().getString(R.string.introducedNextOneActivity_wifi_cannot_null), 1).show();
+						Toast.makeText(mContext, R.string.introducedNextOneActivity_wifi_cannot_null, 1).show();
 						return;
 					}
 					if(wifiName.length()==0||wifiName.length()==0){
-						Toast.makeText(mContext, getResources().getString(R.string.introducedNextOneActivity_device_wifi_cannot_null), 1).show();
+						Toast.makeText(mContext, R.string.introducedNextOneActivity_device_wifi_cannot_null, 1).show();
 						return;
 					}
 					Intent intent = new Intent(mContext, ConnectWifiActivity.class);
@@ -130,7 +125,7 @@ public class IntroducedNextOneActivity extends Activity {
 					intent.putExtra("wifiName", wifiName);
 					intent.putExtra("wifiPwd", wifiPwd);
 					startActivity(intent);
-					finish();
+//					finish();
 				}
 			}
 		}
@@ -162,10 +157,6 @@ public class IntroducedNextOneActivity extends Activity {
 		wifi_name.setText(getResources().getString(R.string.introducedNextOneActivity_current_wifi)+getWIfi());
 	}
 	
-	/**
-	 * 获取wifi信息
-	 * @return
-	 */
 	private String getWIfi(){
 		WifiManager wifiMgr = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
         WifiInfo info = wifiMgr.getConnectionInfo();

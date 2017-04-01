@@ -130,9 +130,7 @@ public class SocketUDP {
 	public void clearClient() {
 		closeConnection();
 	}
-	/**
-	 * 开始接收消息..
-	 */
+	
 	public void startAcceptMessage() {
 //		onGoinglistner = true;
 //		this.context = mContext;

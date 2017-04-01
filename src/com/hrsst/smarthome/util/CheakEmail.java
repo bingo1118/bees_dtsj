@@ -18,11 +18,6 @@ public class CheakEmail {
 		return manager;
 	}
 	
-	/**
-	 * 判断是否是邮箱格式..
-	 * @param email
-	 * @return
-	 */
 	public boolean cheakEmail(String email){
 		String check = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";    
 	    Pattern regex = Pattern.compile(check);    

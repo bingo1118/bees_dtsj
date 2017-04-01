@@ -2,6 +2,7 @@ package com.hrsst.smarthome.activity;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
 import com.hrsst.smarthome.dtsj.R;
 import com.hrsst.smarthome.dialog.ConnectionDoorSenSorDialog;
 import com.hrsst.smarthome.global.Constants;
@@ -10,6 +11,7 @@ import com.hrsst.smarthome.order.SendServerOrder;
 import com.hrsst.smarthome.order.UnPackServer;
 import com.hrsst.smarthome.pojo.UnPackageFromServer;
 import com.hrsst.smarthome.util.BitmapCache;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -25,6 +27,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class AddDoorsensorThreeActivity extends Activity {
@@ -39,6 +42,7 @@ public class AddDoorsensorThreeActivity extends Activity {
 	private ImageView step_three_image;
 	private int type;
 	private byte alarmType;
+	private TextView add_dev_tip;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +60,7 @@ public class AddDoorsensorThreeActivity extends Activity {
 	@SuppressLint("NewApi")
 	private void init() {
 		// TODO Auto-generated method stub
+		add_dev_tip=(TextView)findViewById(R.id.add_dev_tip);
 		step_three_image = (ImageView) findViewById(R.id.step_three_image);
 		switch (type) {
 		case 2:
@@ -78,6 +83,22 @@ public class AddDoorsensorThreeActivity extends Activity {
 			step_three_image.setBackground(rq_3);
 			alarmType =0x04;
 			cdialog = new ConnectionDoorSenSorDialog(mContext,R.anim.connect_rq_anim);
+			break;
+		case 6:
+			add_dev_tip.setText(R.string.add_three_sj);
+			Bitmap mBitmapsj_3 = BitmapCache.getInstance().getBitmap(R.drawable.sj_lct_3,mContext);
+			BitmapDrawable sj_3 = new BitmapDrawable(mContext.getResources(), mBitmapsj_3);
+			step_three_image.setBackground(sj_3);
+			alarmType =0x05;
+			cdialog = new ConnectionDoorSenSorDialog(mContext,R.anim.connect_doorsensor_anim);
+			break;
+		case 7:
+			add_dev_tip.setText(R.string.add_three_ykq);
+			Bitmap mBitmapykq_3 = BitmapCache.getInstance().getBitmap(R.drawable.ykq_lct_2,mContext);
+			BitmapDrawable ykq_3 = new BitmapDrawable(mContext.getResources(), mBitmapykq_3);
+			step_three_image.setBackground(ykq_3);
+			alarmType =0x06;
+			cdialog = new ConnectionDoorSenSorDialog(mContext,R.anim.connect_ykq_anim);
 			break;
 		default:
 			break;
@@ -122,7 +143,7 @@ public class AddDoorsensorThreeActivity extends Activity {
 				UnPackageFromServer	mUnPackageFromServer = new UnPackServer().unStudyOrderPack(datas);
 				String studyResult = mUnPackageFromServer.order;
 				if (studyResult.equals("fail")) {
-					Toast.makeText(context, R.string.configuration_failed, Toast.LENGTH_SHORT).show();
+					Toast.makeText(context,R.string.configuration_failed, Toast.LENGTH_SHORT).show();
 				} else if (studyResult.equals("repetition")) {
 					Toast.makeText(context, R.string.device_have_configuration, Toast.LENGTH_SHORT).show();
 				} else {
@@ -133,7 +154,8 @@ public class AddDoorsensorThreeActivity extends Activity {
 				}
 				mTimer.cancel();
 				count = 0;
-				finish();
+//				finish();
+				startActivity(new Intent(AddDoorsensorThreeActivity.this,MainActivity.class));//@@
 			}
 		}
 
@@ -183,8 +205,10 @@ public class AddDoorsensorThreeActivity extends Activity {
 				count = 0;
 				if (cdialog.isShowing()) {
 					cdialog.dismiss();
+					Toast.makeText(getApplicationContext(), R.string.configuration_outtime, Toast.LENGTH_SHORT).show();//@@
 				}
-				finish();
+//				finish();
+//				startActivity(new Intent(AddDoorsensorThreeActivity.this,MainActivity.class));//@@
 				break;
 			default:
 				break;

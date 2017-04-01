@@ -19,11 +19,12 @@
             android:background="@drawable/menu"
             />
         
-        <ImageView
+         <ImageView 
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:src="@drawable/app_name" />
+            android:src="@drawable/app_name"
+            />
     </RelativeLayout>
      <TextView
         android:id="@+id/tv_image" 

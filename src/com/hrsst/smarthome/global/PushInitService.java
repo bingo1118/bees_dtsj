@@ -64,7 +64,6 @@ public class PushInitService extends Service{
 			super.handleMessage(msg);
 			switch (msg.what) {
 			case 2:
-				//获取个推实例并初始化
 				PushManager.getInstance().initialize(getApplicationContext());
 				break;
 			default:

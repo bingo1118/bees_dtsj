@@ -59,7 +59,6 @@ public class SplashActivity extends Activity{
 		pwd = SharedPreferencesManager.getInstance().getData(mContext, Constants.UserInfo.PWD);
 		boolean connected = NetworkUtil.isConnected(mContext);
 		regFilter();
-		//判断网络是否连接
 		if(connected){
 			handler = new Handler(){
 				@Override
@@ -87,9 +86,6 @@ public class SplashActivity extends Activity{
 		
 	}
 	
-	/**
-	 * 注册广播接收器
-	 */
 	public void regFilter() {
 		IntentFilter filter = new IntentFilter();
 		filter.addAction("Constants.Action.unLoginUser");
@@ -190,9 +186,7 @@ public class SplashActivity extends Activity{
 		}
 	};
 	
-	//自动登陆..
 	private void autoLogin(String userID,String password){
-		//判断账号密码格式是否正确
 		if(null!=userID&&userID.length()>0&&null!=password&&password.length()>0){
 			boolean result = CheakEmail.getInstance().cheakEmail(userID);
 			if (true == result) {

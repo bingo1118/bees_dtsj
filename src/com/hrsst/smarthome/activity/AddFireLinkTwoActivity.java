@@ -2,6 +2,7 @@ package com.hrsst.smarthome.activity;
 
 import com.hrsst.smarthome.dtsj.R;
 import com.hrsst.smarthome.util.BitmapCache;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -54,7 +55,7 @@ public class AddFireLinkTwoActivity extends Activity {
 					i.putExtra("device", device);
 					i.putExtra("location", fk_locationStr);
 					startActivity(i);
-					finish();
+//					finish();
 				} else {
 					Toast.makeText(mContext, R.string.please_input_location, 1).show();
 				}

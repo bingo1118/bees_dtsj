@@ -135,6 +135,7 @@ public class ModifyCameraInfoActivity extends Activity implements OnClickListene
 		re_new_pwd = (EditText) findViewById(R.id.contactPwdNewB);
 		contactId.setText(contact.contactName);
 		contactName.setText(contact.contactName);
+		contactName.setSelection(contact.contactName.length());//@@
 		mSave=(TextView)findViewById(R.id.save);
 		mSave.setOnClickListener(this);
 	}
@@ -165,7 +166,7 @@ public class ModifyCameraInfoActivity extends Activity implements OnClickListene
 			}
 
 			if (password_new.length()>30|| password_new.charAt(0) == '0') {
-				Toast.makeText(mContext, R.string.device_psw_invalid, Toast.LENGTH_SHORT).show();
+				Toast.makeText(mContext, R.string.device_password_invalid, Toast.LENGTH_SHORT).show();
 				return;
 			}
 
@@ -175,7 +176,7 @@ public class ModifyCameraInfoActivity extends Activity implements OnClickListene
 			}
 
 			if (!password_re_new.equals(password_new)) {
-				Toast.makeText(mContext, R.string.two_psw_diffrence, Toast.LENGTH_SHORT).show();
+				Toast.makeText(mContext,R.string.differentpassword, Toast.LENGTH_SHORT).show();
 				return;
 			}
 

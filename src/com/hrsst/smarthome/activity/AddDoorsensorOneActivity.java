@@ -36,6 +36,7 @@ public class AddDoorsensorOneActivity extends Activity {
 	private String devMac;
 	private int type;
 	private ImageView step_one_image;
+	private TextView add_dev_tip;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -46,14 +47,14 @@ public class AddDoorsensorOneActivity extends Activity {
 		mContext = this;
 		mUserDeviceList = (List<UserDevice>) getIntent().getSerializableExtra(
 				"devList");
-		type = getIntent().getExtras().getInt("type");//2门磁  4红外  5燃气
+		type = getIntent().getExtras().getInt("type");//2门磁  4红外  5燃气 6水禁 7遥控器
 		init();
 	}
 
 	@SuppressLint("NewApi")
 	private void init() {
 		// TODO Auto-generated method stub
-		
+		add_dev_tip=(TextView)findViewById(R.id.add_dev_tip);
 		add_doorsensor_action_one = (Button) findViewById(R.id.add_doorsensor_action_one);
 		doorsensor_name = (TextView) findViewById(R.id.doorsensor_name);
 		step_one_image = (ImageView) findViewById(R.id.step_one_image);
@@ -73,6 +74,18 @@ public class AddDoorsensorOneActivity extends Activity {
 			BitmapDrawable bdrq_1 = new BitmapDrawable(mContext.getResources(), mBitmaprq_1);
 			step_one_image.setBackground(bdrq_1);
 			break;
+		case 6:
+			Bitmap mBitmapsj_1 = BitmapCache.getInstance().getBitmap(R.drawable.sj_lct_1,mContext);
+			BitmapDrawable bdsj_1 = new BitmapDrawable(mContext.getResources(), mBitmapsj_1);
+			step_one_image.setBackground(bdsj_1);
+			add_dev_tip.setText(R.string.add_one);
+			break;
+		case 7:
+			Bitmap mBitmapykq_1 = BitmapCache.getInstance().getBitmap(R.drawable.ykq_lct_1,mContext);
+			BitmapDrawable bdykq_1 = new BitmapDrawable(mContext.getResources(), mBitmapykq_1);
+			step_one_image.setBackground(bdykq_1);
+			add_dev_tip.setText(R.string.add_one);
+			break;
 		default:
 			break;
 		}
@@ -87,7 +100,7 @@ public class AddDoorsensorOneActivity extends Activity {
 					i.putExtra("doorsensor", devMac);
 					i.putExtra("type", type);
 					startActivity(i);
-					finish();
+//					finish();
 				} else {
 					Toast.makeText(mContext, R.string.please_choose_smart_socket, Toast.LENGTH_SHORT).show();
 				}

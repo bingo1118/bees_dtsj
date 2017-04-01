@@ -65,6 +65,7 @@ public class BinderPresetPosActivity extends Activity implements OnClickListener
 		// TODO Auto-generated method stub
 		TextView contact_name_tv = (TextView) findViewById(R.id.contact_name_tv);
 		contact_name_tv.setText(contact.contactName);
+		//8个绑定设备位置
 		defence_im0 = (RelativeLayout) findViewById(R.id.defence_im0);
 		defence_im1 = (RelativeLayout) findViewById(R.id.defence_im1);
 		defence_im2 = (RelativeLayout) findViewById(R.id.defence_im2);
@@ -177,7 +178,7 @@ public class BinderPresetPosActivity extends Activity implements OnClickListener
 						dialog_loading.dismiss();
 						dialog_loading = null;
 					}
-					Toast.makeText(mContext, R.string.bind_fail, Toast.LENGTH_SHORT).show();
+					Toast.makeText(mContext,R.string.bind_fail, Toast.LENGTH_SHORT).show();
 					alarmType=null;
 					yuzhiweiNumber=null;
 				}
@@ -193,14 +194,37 @@ public class BinderPresetPosActivity extends Activity implements OnClickListener
 							case "烟感探测器":
 								presetType = 1;
 								break;
+							case "Smoke Detection Alarm":
+								presetType = 1;
+								break;
 							case "门磁探测器":
+								presetType = 2;
+							case "Wireless Doorsensor":
 								presetType = 2;
 								break;
 							case "燃气探测器":
 								presetType = 4;
 								break;
+							case "Wireless Gas Detection Alarm":
+								presetType = 4;
+								break;
 							case "红外探测器":
 								presetType = 3;
+								break;
+							case "Wireless Infrared Detection Alarm":
+								presetType = 3;
+								break;
+							case "水禁":
+								presetType = 5;
+								break;
+							case "Water Level Detector":
+								presetType = 5;
+								break;
+							case "万能遥控器":
+								presetType = 6;
+								break;
+							case "Controler":
+								presetType = 6;
 								break;
 							default:
 								break;
@@ -228,7 +252,9 @@ public class BinderPresetPosActivity extends Activity implements OnClickListener
 		}
 		
 	};
-	
+	/**
+	 * 给8个预置位设置背景。。
+	 */
 	private void initRela(){
 		for(BindingPreset mBindingPreset : listBindingPreset){
 			int id = mBindingPreset.id;
@@ -247,6 +273,12 @@ public class BinderPresetPosActivity extends Activity implements OnClickListener
 							break;
 						case 4:
 							defence_im0.setBackgroundResource(R.drawable.delete_defence_image_selector4);
+							break;
+						case 5:
+							defence_im0.setBackgroundResource(R.drawable.delete_defence_image_selector5);
+							break;
+						case 6:
+							defence_im0.setBackgroundResource(R.drawable.delete_defence_image_selector6);
 							break;
 						default:
 							defence_im0.setBackgroundResource(R.drawable.add_defence_image_selector1);
@@ -267,7 +299,12 @@ public class BinderPresetPosActivity extends Activity implements OnClickListener
 						case 4:
 							defence_im1.setBackgroundResource(R.drawable.delete_defence_image_selector4);
 							break;
-
+						case 5:
+							defence_im1.setBackgroundResource(R.drawable.delete_defence_image_selector5);
+							break;
+						case 6:
+							defence_im1.setBackgroundResource(R.drawable.delete_defence_image_selector6);
+							break;
 						default:
 							defence_im1.setBackgroundResource(R.drawable.add_defence_image_selector1);
 							break;
@@ -287,7 +324,12 @@ public class BinderPresetPosActivity extends Activity implements OnClickListener
 						case 4:
 							defence_im2.setBackgroundResource(R.drawable.delete_defence_image_selector4);
 							break;
-
+						case 5:
+							defence_im2.setBackgroundResource(R.drawable.delete_defence_image_selector5);
+							break;
+						case 6:
+							defence_im2.setBackgroundResource(R.drawable.delete_defence_image_selector6);
+							break;
 						default:
 							defence_im2.setBackgroundResource(R.drawable.add_defence_image_selector1);
 							break;
@@ -307,6 +349,12 @@ public class BinderPresetPosActivity extends Activity implements OnClickListener
 						case 4:
 							defence_im3.setBackgroundResource(R.drawable.delete_defence_image_selector4);
 							break;
+						case 5:
+							defence_im3.setBackgroundResource(R.drawable.delete_defence_image_selector5);
+							break;
+						case 6:
+							defence_im3.setBackgroundResource(R.drawable.delete_defence_image_selector6);
+							break;
 						default:
 							defence_im3.setBackgroundResource(R.drawable.add_defence_image_selector1);
 							break;
@@ -325,6 +373,12 @@ public class BinderPresetPosActivity extends Activity implements OnClickListener
 							break;
 						case 4:
 							defence_im4.setBackgroundResource(R.drawable.delete_defence_image_selector4);
+							break;
+						case 5:
+							defence_im4.setBackgroundResource(R.drawable.delete_defence_image_selector5);
+							break;
+						case 6:
+							defence_im4.setBackgroundResource(R.drawable.delete_defence_image_selector6);
 							break;
 
 						default:
@@ -346,6 +400,12 @@ public class BinderPresetPosActivity extends Activity implements OnClickListener
 						case 4:
 							defence_im5.setBackgroundResource(R.drawable.delete_defence_image_selector4);
 							break;
+						case 5:
+							defence_im5.setBackgroundResource(R.drawable.delete_defence_image_selector5);
+							break;
+						case 6:
+							defence_im5.setBackgroundResource(R.drawable.delete_defence_image_selector6);
+							break;
 
 						default:
 							defence_im5.setBackgroundResource(R.drawable.add_defence_image_selector1);
@@ -366,10 +426,17 @@ public class BinderPresetPosActivity extends Activity implements OnClickListener
 						case 4:
 							defence_im6.setBackgroundResource(R.drawable.delete_defence_image_selector4);
 							break;
+						case 5:
+							defence_im6.setBackgroundResource(R.drawable.delete_defence_image_selector5);
+							break;
+						case 6:
+							defence_im6.setBackgroundResource(R.drawable.delete_defence_image_selector6);
+							break;
 
 						default:
 							defence_im6.setBackgroundResource(R.drawable.add_defence_image_selector1);
 							break;
+						
 					}
 					break;
 				case 7:
@@ -385,6 +452,12 @@ public class BinderPresetPosActivity extends Activity implements OnClickListener
 							break;
 						case 4:
 							defence_im7.setBackgroundResource(R.drawable.delete_defence_image_selector4);
+							break;
+						case 5:
+							defence_im7.setBackgroundResource(R.drawable.delete_defence_image_selector5);
+							break;
+						case 6:
+							defence_im7.setBackgroundResource(R.drawable.delete_defence_image_selector6);
 							break;
 
 						default:
@@ -470,7 +543,7 @@ public class BinderPresetPosActivity extends Activity implements OnClickListener
 			if(null!=status&&status.length>0&&status[5]==0){
 				clearDefence(5);
 			}else{
-				item= 5;//@@
+				item= 5;
 				configDev(item);
 			}
 			break;
@@ -494,13 +567,16 @@ public class BinderPresetPosActivity extends Activity implements OnClickListener
 			break;
 		}
 	}
-	
+	/**
+	 * 选择提示框显示并操作。。
+	 * @param item
+	 */
 	private void configDev(final int item){
 		final NormalDialog dialog = new NormalDialog(
 				mContext,
 				mContext.getResources().getString(R.string.learing_code),
 				mContext.getResources().getString(R.string.learing_code_prompt),
-				"绑定",
+				mContext.getResources().getString(R.string.bind),
 				mContext.getResources().getString(R.string.cancel)
 				);
 		dialog.setOnButtonOkListener(new NormalDialog.OnButtonOkListener() {
@@ -509,7 +585,7 @@ public class BinderPresetPosActivity extends Activity implements OnClickListener
 			public void onClick() {
 				// TODO Auto-generated method stub
 				if(alarmType==null||yuzhiweiNumber==null){
-					Toast.makeText(mContext, R.string.please_choose_chuanganqi_and_preset_position, Toast.LENGTH_SHORT).show();
+					Toast.makeText(mContext,R.string.please_choose_chuanganqi_and_preset_position, Toast.LENGTH_SHORT).show();
 					return;
 				}
 				if(null==dialog_loading){
@@ -559,7 +635,10 @@ public class BinderPresetPosActivity extends Activity implements OnClickListener
 	private void getDefenceStatus(){
 		P2PHandler.getInstance().getDefenceArea(contact.contactId, contact.contactPassword);
 	}
-	
+	/**
+	 * 删除布放设备。。
+	 * @param item
+	 */
 	private void clearDefence(final int item){
 		View v = LayoutInflater.from(mContext).inflate(
 				R.layout.relate_dialog, null);

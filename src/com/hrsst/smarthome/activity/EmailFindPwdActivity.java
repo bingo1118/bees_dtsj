@@ -69,7 +69,7 @@ public class EmailFindPwdActivity extends Activity implements OnClickListener {
 					Toast.makeText(mContext, R.string.two_psw_diffrence, 1).show();
 				}
 			} else {
-				Toast.makeText(mContext, R.string.email_format_error, 1).show();
+				Toast.makeText(mContext,R.string.email_format_error, 1).show();
 			}
 			break;
 

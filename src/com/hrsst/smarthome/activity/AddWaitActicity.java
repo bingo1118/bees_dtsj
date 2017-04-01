@@ -98,7 +98,7 @@ public class AddWaitActicity extends Activity{
 				switch (msg.what) {
 				case UDPHelper.HANDLER_MESSAGE_BIND_ERROR:
 					Log.e("my", "HANDLER_MESSAGE_BIND_ERROR");
-					Toast.makeText(mContext, R.string.port_occupied, Toast.LENGTH_SHORT).show();
+					Toast.makeText(mContext,R.string.port_occupied, Toast.LENGTH_SHORT).show();
 					break;
 				case UDPHelper.HANDLER_MESSAGE_RECEIVE_MSG:
 					isReceive = true;

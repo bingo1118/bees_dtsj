@@ -12,12 +12,21 @@ public class UserDevice implements Serializable {
 	private int socketStates;
 	private String newTime; 
 	private int lightOnOrOutLine;
-	private int devType;//设备类型：1、排插/2、摄像头
+	private int devType;//设备类型：1、排插/2、摄像头/3.环境探测器
 	private String cameraPwd;
 	private int isShare;
 	private int defence;
 	private int id;
+	private EnvironmentInfo environment;//@@
 	
+	public EnvironmentInfo getEnvironment() {
+		return environment;
+	}
+
+	public void setEnvironment(EnvironmentInfo environment) {
+		this.environment = environment;
+	}
+
 	public UserDevice() {
 		super();
 	}

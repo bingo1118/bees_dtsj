@@ -1,10 +1,12 @@
 package com.hrsst.smarthome.activity;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.http.util.EncodingUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,6 +42,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +56,7 @@ public class AlarmTypeListActivity extends Activity{
 	private List<AlarmType> li;
 	private AlertDialog dialog,modifyDialog;
 	private SocketUDP mSocketUDPClient;
+	private ProgressBar progressBar;//@@
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +95,7 @@ public class AlarmTypeListActivity extends Activity{
 						getDevice(mac,type,"");
 						Toast.makeText(mContext, R.string.change_success, Toast.LENGTH_SHORT).show();
 					}else if(result.equals("failed")){
-						Toast.makeText(mContext, R.string.change_fail, Toast.LENGTH_SHORT).show();
+						Toast.makeText(mContext,R.string.change_fail, Toast.LENGTH_SHORT).show();
 					}
 				}
 			}
@@ -130,7 +134,7 @@ public class AlarmTypeListActivity extends Activity{
 						// TODO Auto-generated method stub
 						String modifyName = modify_named.getText().toString()
 								.trim();
-						if(modifyName.length()>=50){
+						if(modifyName.length()>=15){//@@
 							Toast.makeText(mContext, R.string.input_string_too_long, Toast.LENGTH_SHORT).show();
 						}else{
 							byte[] orderSend =SendServerOrder.ModifyAlarmName(alarmMac, modifyName);
@@ -160,9 +164,17 @@ public class AlarmTypeListActivity extends Activity{
 		case 3:
 			alarm_type_name_list.setText(R.string.list_of_hongwai);
 			break;
+		case 5:
+			alarm_type_name_list.setText(R.string.list_of_shuijin);
+			break;
+		case 6:
+			alarm_type_name_list.setText(R.string.list_of_ykq);
+			break;
 		default:
 			break;
 		}
+		
+		progressBar=(ProgressBar)findViewById(R.id.progressBar);//@@
 		
 		alarm_type_list = (ListView) findViewById(R.id.alarm_type_list);
 		getDevice(mac,type,"");
@@ -202,13 +214,19 @@ public class AlarmTypeListActivity extends Activity{
 			}
 		});
 	}
-	
+	/**
+	 * 获取设备。。
+	 * @param mac
+	 * @param type
+	 * @param alarmMac
+	 */
 	private void getDevice(String mac,final int type,String alarmMac){
+		progressBar.setVisibility(View.VISIBLE);//@@
 		RequestQueue mQueue = Volley.newRequestQueue(mContext);
 		Map<String,String> map = new HashMap<String,String>();
-		map.put("type", type+"");
+		map.put("type", type+"");//433设备设备类型..
 		map.put("alarmMac", alarmMac);
-		map.put("dwMac", mac);
+		map.put("dwMac", mac);//插座mac..
 		JsonArrayPostRequest mJsonRequest = new JsonArrayPostRequest(
 				Constants.DELETE_433_DEVICE_LIST_URL, 
 				new Listener<JSONArray>() {
@@ -233,12 +251,17 @@ public class AlarmTypeListActivity extends Activity{
 						}
 						mDevTypeAdapter = new DevTypeAdapter(li, mContext, type);
 						alarm_type_list.setAdapter(mDevTypeAdapter);
+						progressBar.setVisibility(View.GONE);//@@
+						if(li.size()==0){
+							Toast.makeText(mContext, R.string.no_data, Toast.LENGTH_SHORT).show();
+						}//@@
 					}
 				}, 
 				new ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						// TODO Auto-generated method stub
+						Toast.makeText(mContext, R.string.error, Toast.LENGTH_SHORT).show();
+						progressBar.setVisibility(View.GONE);//@@
 					}
 				}, 
 				map);

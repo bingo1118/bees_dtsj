@@ -2,6 +2,7 @@ package com.hrsst.smarthome.activity;
 
 import com.hrsst.smarthome.dtsj.R;
 import com.hrsst.smarthome.util.BitmapCache;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -14,6 +15,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class AddDoorsensorTwoActivity extends Activity{
@@ -23,6 +25,7 @@ public class AddDoorsensorTwoActivity extends Activity{
 	private EditText doorsensor_location;
 	private ImageView step_two_image;
 	private int type;
+	private TextView add_dev_tip;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,7 @@ public class AddDoorsensorTwoActivity extends Activity{
 	@SuppressLint("NewApi")
 	private void init() {
 		// TODO Auto-generated method stub
+		add_dev_tip=(TextView)findViewById(R.id.add_dev_tip);
 		add_doorsensor_action_two = (Button) findViewById(R.id.add_doorsensor_action_two);
 		doorsensor_location = (EditText) findViewById(R.id.doorsensor_location);
 		step_two_image = (ImageView) findViewById(R.id.step_two_image);
@@ -57,6 +61,18 @@ public class AddDoorsensorTwoActivity extends Activity{
 			BitmapDrawable rq_2 = new BitmapDrawable(mContext.getResources(), mBitmaprq_2);
 			step_two_image.setBackground(rq_2);
 			break;
+		case 6:
+			Bitmap mBitmapsj_2 = BitmapCache.getInstance().getBitmap(R.drawable.sj_lct_2,mContext);
+			BitmapDrawable sj_2 = new BitmapDrawable(mContext.getResources(), mBitmapsj_2);
+			step_two_image.setBackground(sj_2);
+			add_dev_tip.setText(R.string.add_two);
+			break;
+		case 7:
+			Bitmap mBitmapykq_2 = BitmapCache.getInstance().getBitmap(R.drawable.ykq_lct_1,mContext);
+			BitmapDrawable ykq_2 = new BitmapDrawable(mContext.getResources(), mBitmapykq_2);
+			step_two_image.setBackground(ykq_2);
+			add_dev_tip.setText(R.string.add_two);
+			break;
 		default:
 			break;
 		}
@@ -72,7 +88,7 @@ public class AddDoorsensorTwoActivity extends Activity{
 					i.putExtra("location", doorsensor_locationStr);
 					i.putExtra("type", type);
 					startActivity(i);
-					finish();
+//					finish();
 				}else{
 					Toast.makeText(mContext, R.string.please_input_location, 1).show();
 				}

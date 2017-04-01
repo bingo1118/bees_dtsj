@@ -104,7 +104,9 @@ public class AlarmActivity extends Activity {
 			watch_video_image.setVisibility(View.GONE);
 		}	
 	}
-
+	/**
+	 * ±¨¾¯¶¯»­Æô¶¯¡£¡£
+	 */
 	private void alarmInit() {
 		final AnimationDrawable anim = (AnimationDrawable) alarm_fk_img
 				.getBackground();
@@ -233,16 +235,22 @@ public class AlarmActivity extends Activity {
 		String s = null;
 		switch (type) {
 		case 1:
-			s = getString(R.string.alarmactivity_yangan);
+			s = getResources().getString(R.string.alarmactivity_yangan);
 			break;
 		case 2:
-			s = getString(R.string.alarmactivity_menci);
+			s = getResources().getString(R.string.alarmactivity_menci);
 			break;
 		case 3:
-			s = getString(R.string.alarmactivity_hongwai);
+			s = getResources().getString(R.string.alarmactivity_hongwai);
 			break;
 		case 4:
-			s = getString(R.string.alarmactivity_keranqiti);
+			s = getResources().getString(R.string.alarmactivity_keranqiti);
+			break;
+		case 5:
+			s = getResources().getString(R.string.water_dev);
+			break;
+		case 6:
+			s = getResources().getString(R.string.controler_dev);
 			break;
 		default:
 			break;

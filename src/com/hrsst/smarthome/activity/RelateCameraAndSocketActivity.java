@@ -102,7 +102,7 @@ public class RelateCameraAndSocketActivity extends Activity {
 					byte[] orderSend = SendServerOrder.binderCameraAndSocket(devMac,contactId);
 					mSocketUDP.sendMsg(orderSend);
 				} else {
-					Toast.makeText(mContext, R.string.please_choose_need_bind_socket, Toast.LENGTH_SHORT).show();
+					Toast.makeText(mContext,R.string.please_choose_need_bind_socket, Toast.LENGTH_SHORT).show();
 				}
 			}
 		});
