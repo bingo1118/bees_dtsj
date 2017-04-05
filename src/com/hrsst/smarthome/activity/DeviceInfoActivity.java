@@ -246,6 +246,7 @@ public class DeviceInfoActivity extends Activity implements OnClickListener {
 				byte[] datas = arg1.getExtras().getByteArray("datasByte");
 				UnPackageFromServer mUnPackageFromServer = new UnPackServer().unOpenOrCloseOrderPack(datas);
 				String receiveFlag = mUnPackageFromServer.devStates;
+				byte[] seq = mUnPackageFromServer.seq;//@@
 				if ("close".equals(receiveFlag)) {
 					Bitmap mBitmap = BitmapCache.getInstance().getBitmap(R.drawable.bj_on,mContext);
 					BitmapDrawable bd = new BitmapDrawable(mContext.getResources(), mBitmap);
@@ -266,6 +267,7 @@ public class DeviceInfoActivity extends Activity implements OnClickListener {
 					devStatus = getResources().getString(R.string.off);
 					mTextView.setText(devName+" "+devStatus);
 				}
+				mSocketUDPClient.sendMsg(SendServerOrder.ClientACKOrder(mac,seq));//»Ø¸´ACK@@
 			}
 
 			if (arg1.getAction().equals("Constants.Action.unServerACKPack")) {
