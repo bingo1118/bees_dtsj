@@ -57,8 +57,8 @@ public class RecordListFragment extends Fragment implements OnScrollListener {
 	LayoutInflater inflater;
 	RecordAdapter adapter;
 	boolean isDialogShowing = false;
-	private int visibleLastIndex = 0; // 最后的可视项索引
-	private int visibleItemCount; // 当前窗口可见项总数
+	private int visibleLastIndex = 0; // 鏈�鍚庣殑鍙椤圭储寮�
+	private int visibleItemCount; // 褰撳墠绐楀彛鍙椤规�绘暟
 	RelativeLayout layout_loading;
 	boolean isRegFilter = false;
 	private List<String> list;
@@ -322,11 +322,11 @@ public class RecordListFragment extends Fragment implements OnScrollListener {
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
 		// TODO Auto-generated method stub
-		int itemsLastIndex = adapter.getCount(); // 数据集最后一项的索引
-		int lastIndex = itemsLastIndex + 1; // 加上底部的loadMoreView项
+		int itemsLastIndex = adapter.getCount(); // 鏁版嵁闆嗘渶鍚庝竴椤圭殑绱㈠紩
+		int lastIndex = itemsLastIndex + 1; // 鍔犱笂搴曢儴鐨刲oadMoreView椤�
 		if (scrollState == OnScrollListener.SCROLL_STATE_IDLE
 				&& visibleLastIndex == lastIndex) {
-			// 如果是自动加载,可以在这里放置异步加载数据的代码
+			// 濡傛灉鏄嚜鍔ㄥ姞杞�,鍙互鍦ㄨ繖閲屾斁缃紓姝ュ姞杞芥暟鎹殑浠ｇ爜
 
 		}
 		Log.e("length", itemsLastIndex + "itemsLastIndex");
@@ -346,7 +346,7 @@ public class RecordListFragment extends Fragment implements OnScrollListener {
 				}
 				layout_loading.setVisibility(View.VISIBLE);
 
-				Log.i("waitload", "请求一次");
+				Log.i("waitload", "璇锋眰涓�娆�");
 				setIsWatie(true);
 				P2PHandler.getInstance().getRecordFiles(contact.getContactId(),
 						contact.contactPassword, nextStartTime, nextEndTime);

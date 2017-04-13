@@ -3,6 +3,7 @@ package com.hrsst.smarthome;
 import com.hrsst.smarthome.dtsj.R;
 import com.hrsst.smarthome.pojo.Contact;
 import com.p2p.core.P2PHandler;
+
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;

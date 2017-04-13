@@ -3,11 +3,13 @@ package com.hrsst.smarthome;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import com.hrsst.smarthome.dtsj.R;
 import com.hrsst.smarthome.pojo.EnvironmentInfo;
 import com.hrsst.smarthome.pojo.UserDevice;
 import com.hrsst.smarthome.view.ViewPagerIndicator;
 import com.hrsst.smarthome.view.VpSimpleFragment;
+
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

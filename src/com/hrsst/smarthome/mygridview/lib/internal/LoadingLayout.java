@@ -31,10 +31,10 @@ public class LoadingLayout extends BaseLoadingLayout {
 	private String pullLabel, pullLabel1;
 	private String refreshingLabel;
 	private String releaseLabel, releaseLabel1;
-	private String currentTime;// 当前的更新时间
-	private String oldTime;// 上一次更新时间
+	private String currentTime;// 褰撳墠鐨勬洿鏂版椂闂�
+	private String oldTime;// 涓婁竴娆℃洿鏂版椂闂�
 	private Context mContext;
-	private boolean flagShow;// 是否出现几亿人那个图片：
+	private boolean flagShow;// 鏄惁鍑虹幇鍑犱嚎浜洪偅涓浘鐗囷細
 
 	private final Animation rotateAnimation, resetRotateAnimation;
 
@@ -42,9 +42,9 @@ public class LoadingLayout extends BaseLoadingLayout {
 		super(context, mode, releaseLabel, releaseLabel1, pullLabel, pullLabel1, refreshingLabel);
 		mContext = context;
 		ViewGroup header = (ViewGroup) LayoutInflater.from(context).inflate(R.layout.pull_to_refresh_header, this);
-		headerText = (TextView) header.findViewById(R.id.pull_to_refresh_text);// 下拉可以刷新
-		headerText1 = (TextView) header.findViewById(R.id.pull_to_refresh_text1);// 下拉可以刷新
-		loadingText = (TextView) header.findViewById(R.id.pull_to_refresh_loading_text);// 刷新加载
+		headerText = (TextView) header.findViewById(R.id.pull_to_refresh_text);// 涓嬫媺鍙互鍒锋柊
+		headerText1 = (TextView) header.findViewById(R.id.pull_to_refresh_text1);// 涓嬫媺鍙互鍒锋柊
+		loadingText = (TextView) header.findViewById(R.id.pull_to_refresh_loading_text);// 鍒锋柊鍔犺浇
 		headerImage = (ImageView) header.findViewById(R.id.pull_to_refresh_image);
 		headerProgress = (ProgressBar) header.findViewById(R.id.pull_to_refresh_progress);
 		header_pic = (ImageView) header.findViewById(R.id.pull_head_pic);
@@ -64,8 +64,8 @@ public class LoadingLayout extends BaseLoadingLayout {
 		resetRotateAnimation.setDuration(DEFAULT_ROTATION_ANIMATION_DURATION);
 		resetRotateAnimation.setFillAfter(true);
 
-		this.releaseLabel = releaseLabel;// "松开即可刷新"
-		this.pullLabel = pullLabel;// 拖拉可以刷新
+		this.releaseLabel = releaseLabel;// "鏉惧紑鍗冲彲鍒锋柊"
+		this.pullLabel = pullLabel;// 鎷栨媺鍙互鍒锋柊
 		this.releaseLabel1 = releaseLabel1;
 		this.refreshingLabel = refreshingLabel;
 
@@ -90,36 +90,36 @@ public class LoadingLayout extends BaseLoadingLayout {
 	}
 
 	/**
-	 * 得到当前时间格式：
+	 * 寰楀埌褰撳墠鏃堕棿鏍煎紡锛�
 	 *
 	 * @return
 	 */
 	public static String getMyCurrentTime() {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date curDate = new Date(System.currentTimeMillis());// 获取当前时间
+		Date curDate = new Date(System.currentTimeMillis());// 鑾峰彇褰撳墠鏃堕棿
 		return formatter.format(curDate);
 
 		/*
-		 * 获取年月日当前时间 SimpleDateFormat sDateFormat = new
+		 * 鑾峰彇骞存湀鏃ュ綋鍓嶆椂闂� SimpleDateFormat sDateFormat = new
 		 * SimpleDateFormat("yyyy-MM-dd   hh:mm:ss"); String date =
 		 * sDateFormat.format(new java.util.Date());
 		 */
 
 		/*
-		 * 如果想获取当前的年月,则可以这样写(只获取时间或秒种一样): SimpleDateFormat sdf=new
+		 * 濡傛灉鎯宠幏鍙栧綋鍓嶇殑骞存湀,鍒欏彲浠ヨ繖鏍峰啓(鍙幏鍙栨椂闂存垨绉掔涓�鏍�): SimpleDateFormat sdf=new
 		 * SimpleDateFormat("yyyy-MM"); String date=sdf.format(new
 		 * java.util.Date());
 		 */
 
 		/*
-		 * 当然还有就是可以指定时区的时间(待):
+		 * 褰撶劧杩樻湁灏辨槸鍙互鎸囧畾鏃跺尯鐨勬椂闂�(寰�):
 		 * df=DateFormat.getDateTimeInstance(DateFormat.FULL,
 		 * DateFormat.FULL,Locale.CHINA); System.out.println(df.format(new
 		 * Date()));
 		 */
 	}
 
-	// 几亿图片提示：
+	// 鍑犱嚎鍥剧墖鎻愮ず锛�
 	private void viewVisible() {
 		header_pic.setVisibility(View.VISIBLE);
 		headerImage.setVisibility(View.GONE);
@@ -129,7 +129,7 @@ public class LoadingLayout extends BaseLoadingLayout {
 		loadingText.setVisibility(View.GONE);
 	}
 
-	public void reset() {// 避免最后又出现一下
+	public void reset() {// 閬垮厤鏈�鍚庡張鍑虹幇涓�涓�
 		// headerText.setText(pullLabel);
 		// headerImage.setVisibility(View.VISIBLE);
 		if (pullLabel1.equals("")) {
@@ -154,7 +154,7 @@ public class LoadingLayout extends BaseLoadingLayout {
 	public void releaseToRefresh() {
 		currentTime = getMyCurrentTime();
 		this.releaseLabel1 = mContext.getResources().getString(R.string.pull_loading_new_geng) + currentTime;
-		oldTime = currentTime;// 记住当前更新时间，下次下拉显示
+		oldTime = currentTime;// 璁颁綇褰撳墠鏇存柊鏃堕棿锛屼笅娆′笅鎷夋樉绀�
 		headerText.setVisibility(View.VISIBLE);
 		headerText1.setVisibility(View.VISIBLE);
 		headerText.setText(releaseLabel);
