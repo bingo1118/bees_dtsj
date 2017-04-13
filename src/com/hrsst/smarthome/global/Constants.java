@@ -36,7 +36,7 @@ public class Constants {
 	//获取系统消息列表
 	public static final String GET_SYSTEM_MSG_URL = SERVER_URL+"/findShareMessagesList.action";
 	//更新接口
-	public static final String UPDATE_URL="http://119.29.155.148/download/update_bees.xml";
+	public static final String UPDATE_URL="http://119.29.155.148/download/update_dtsj.xml";
 	
 	public static final String[] WEEKEN_STRING = {"星期日","星期一","星期二","星期三","星期四","星期五","星期六"};
 	public static final String EVERY_DAY = "星期日 星期一 星期二 星期三 星期四 星期五 星期六 ";
