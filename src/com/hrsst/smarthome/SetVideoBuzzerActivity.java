@@ -1,5 +1,6 @@
 package com.hrsst.smarthome;
 
+import com.hrsst.smarthome.activity.ApMonitorActivity;
 import com.hrsst.smarthome.dtsj.R;
 import com.hrsst.smarthome.pojo.Contact;
 import com.p2p.core.P2PHandler;
@@ -11,6 +12,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -205,5 +207,18 @@ public class SetVideoBuzzerActivity extends Activity implements OnClickListener{
 		public static final int ACK_NET_ERROR = 9998;
 		public static final int ACK_SUCCESS = 9997;
 		public static final int ACK_INSUFFICIENT_PERMISSIONS=9996;
+	}
+	
+	//@@返回上一界面
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+		if (keyCode == KeyEvent.KEYCODE_BACK){
+			Intent i = new Intent(mContext,ApMonitorActivity.class);
+			i.putExtra("contact",contact);
+			startActivity(i);
+			finish();
+		}
+		return super.onKeyDown(keyCode, event);
 	}
 }
