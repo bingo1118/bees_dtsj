@@ -71,7 +71,6 @@ public class SplashActivity extends Activity{
 					// TODO Auto-generated method stub
 					super.handleMessage(msg);
 					autoLogin(userId,pwd);
-//					LoginHttp(userId,pwd);
 				}
 			};
 			Message msg = new Message();
@@ -194,6 +193,8 @@ public class SplashActivity extends Activity{
 	
 	private void autoLogin(String userID,String password){
 		if(null!=userID&&userID.length()>0&&null!=password&&password.length()>0){
+			mTimer = new Timer();//@@
+			setTimerdoAction(doAction,mTimer);//@@
 			boolean result = CheakEmail.getInstance().cheakEmail(userID);
 			if (true == result) {
 				byte type=0x02;
