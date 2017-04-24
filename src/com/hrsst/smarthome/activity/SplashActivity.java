@@ -305,7 +305,7 @@ public class SplashActivity extends Activity{
 						+"&pwd="+new MD5().getMD5ofStr(psw)
 						+"&type="+type
 						+"&geTuiClientId="+cid
-						+"&token=&appType=1";
+						+"&token=&appType=2";
 		RequestQueue mQueue = Volley.newRequestQueue(mContext);
 		StringRequest mJsonRequest = new StringRequest(
 				url, 
@@ -401,7 +401,16 @@ public class SplashActivity extends Activity{
 								finish();
 								break;
 							case 1:
+								if(mTimer!=null){//@@
+									mTimer.cancel();
+									mTimer=null;
+								}
+								count=0;//@@
 								Toast.makeText(mContext, R.string.user_on_exist, Toast.LENGTH_SHORT).show();
+								Intent i3 = new Intent(SplashActivity.this,LoginActivity.class);//@@
+								i3.putExtra("ifLogin", "no");//@@
+								startActivity(i3);//@@
+								finish();//@@
 								break;
 							default:
 								break;

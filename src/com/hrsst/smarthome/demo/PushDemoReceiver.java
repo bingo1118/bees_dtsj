@@ -26,8 +26,8 @@ import com.igexin.sdk.PushConsts;
 
 public class PushDemoReceiver extends BroadcastReceiver {
 
-    /**
-     * 搴旂敤鏈惎鍔�, 涓帹 service宸茬粡琚敜閱�,淇濆瓨鍦ㄨ鏃堕棿娈靛唴绂荤嚎娑堟伅(姝ゆ椂 GetuiSdkDemoActivity.tLogView == null)
+	 /**
+     * 应用未启动, 个推 service已经被唤醒,保存在该时间段内离线消息(此时 GetuiSdkDemoActivity.tLogView == null)
      */
     public static StringBuilder payloadData = new StringBuilder();
     public static final int NOTIFICATION_ID = 0x53256561;
@@ -42,12 +42,12 @@ public class PushDemoReceiver extends BroadcastReceiver {
 
         switch (bundle.getInt(PushConsts.CMD_ACTION)) {
             case PushConsts.GET_MSG_DATA:
-                // 鑾峰彇閫忎紶鏁版嵁
+            	// 获取透传数据
 //                String appid = bundle.getString("appid");
                 payload = bundle.getByteArray("payload");
                 if(payload!=null&&payload.length>8){
                 	int type = payload[0];
-                    if(type==1){//鎶ヨ@@
+                    if(type==1){//报警@@
                     	regFilter();
                     	if(payload.length>12){
                     		byte[] mac = new byte[12];
@@ -63,7 +63,7 @@ public class PushDemoReceiver extends BroadcastReceiver {
                     		mSocketUDPClient.sendMsg(orderSend);
                     	}
                     }
-                    if(type==2){//鍏变韩璁惧銆傘��
+                    if(type==2){//共享设备。。
                     	byte[] receive = new byte[payload.length-1];
                     	for(int i = 0;i<receive.length;i++){
                     		receive[i] = payload[i+1];
@@ -92,9 +92,9 @@ public class PushDemoReceiver extends BroadcastReceiver {
     @SuppressWarnings("deprecation")
 	private void showDownNotification(Context context,String toUserNum,String ss){
     	long when = System.currentTimeMillis();
-        //浠庣郴缁熸湇鍔′腑鑾峰緱閫氱煡绠＄悊鍣�
+    	//从系统服务中获得通知管理器
         NotificationManager nm=(NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-        //瀹氫箟notification
+        //定义notification
 
         Notification mNotification = new Notification(
                 R.drawable.notification,
@@ -110,17 +110,17 @@ public class PushDemoReceiver extends BroadcastReceiver {
 //        contentView.setTextViewText(R.id.share_text, toUserNum+context.getString(R.string.get_device_share_massage));
 //        contentView.setTextViewText(R.id.share_text, getfromusername(ss)+"鍙戞潵璁惧鍏变韩娑堟伅");
         contentView.setTextViewText(R.id.share_text, context.getString(R.string.get_device_share_massage));
-        //閫氱煡娑堟伅涓嶪ntent鍏宠仈
+        //通知消息与Intent关联
         Intent it=new Intent(context,SystemMessageActivity.class);
         it.putExtra("toUserNum", toUserNum);
         it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent contentIntent=PendingIntent.getActivity(context, 100, it, PendingIntent.FLAG_CANCEL_CURRENT);
-        //鍏蜂綋鐨勯�氱煡鍐呭
+        //具体的通知内容
         mNotification.contentView = contentView;
         mNotification.contentIntent = contentIntent;
 
         mNotification.defaults = Notification.DEFAULT_SOUND;
-        //鎵ц閫氱煡
+      //执行通知
         nm.notify(NOTIFICATION_ID, mNotification);
     } 
     
@@ -146,7 +146,7 @@ public class PushDemoReceiver extends BroadcastReceiver {
 
 		@Override
 		public void onReceive(Context arg0, Intent arg1) {
-			//鏀跺埌骞挎挱锛屾槸鍚︾敤鎴锋嫢鏈夋憚鍍忔満銆傘��
+			//收到广播，是否用户拥有摄像机。。
 			if(arg1.getAction().equals("Constants.Action.unIfUserOwnCamera")){
 				byte[] datas = arg1.getExtras().getByteArray("datasByte");
 				UnPackageFromServer mUnPackageFromServer = UnPackServer.unIfUserOwnCamera(datas);

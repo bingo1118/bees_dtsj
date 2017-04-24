@@ -393,20 +393,20 @@
         <!-- 配置的第三方参数属性 -->
         <meta-data
             android:name="PUSH_APPID"
-            android:value="uDPGWXEBnZ5XsyHBCx48" />
+            android:value="4odWX7uG5Q74qm32CWVNtA" />
         <meta-data
             android:name="PUSH_APPKEY"
-            android:value="GHZLzurtFQ9zDwMy6KVLl3" />
+            android:value="CGqGSK80vZ5ir5v03wyUC4" />
         <meta-data
             android:name="PUSH_APPSECRET"
-            android:value="GHZLzurtFQ9zDwMy6KVLl3" />
+            android:value="CGqGSK80vZ5ir5v03wyUC4" />
 
         <!-- 配置第三方Receiver -->
         <receiver
             android:name="com.hrsst.smarthome.demo.PushDemoReceiver"
             android:exported="false" >
             <intent-filter>
-                <action android:name="com.igexin.sdk.action.uDPGWXEBnZ5XsyHBCx48" />
+                <action android:name="com.igexin.sdk.action.4odWX7uG5Q74qm32CWVNtA" />
             </intent-filter>
         </receiver>
         <receiver android:name="com.hrsst.smarthome.thread.NotificationClickReceiver" >

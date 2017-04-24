@@ -13,8 +13,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import com.hrsst.smarthome.dtsj.R;
 import com.hrsst.smarthome.global.Constants;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -104,7 +106,11 @@ public class CrashHandler implements UncaughtExceptionHandler {
 			return false;
 		}else{
 			String a=ex.getMessage();
-			String b=ex.getLocalizedMessage();
+			String b=ex.toString();
+			Throwable c=ex.getCause();
+			Log.e("dtsjError", a);
+			Log.e("dtsjError", b);
+			Log.e("dtsjError", c.toString());
 		}
 		// 使用Toast来显示异常信息
 		new Thread() {

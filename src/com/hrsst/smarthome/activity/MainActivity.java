@@ -432,7 +432,7 @@ public class MainActivity extends Activity implements OnClickListener{
 	 */
 	private void UnloginUser() {
 		String userName=SharedPreferencesManager.getInstance().getData(mContext, Constants.UserInfo.USER_NUMBER);
-		String url=Constants.UNLOGINHTTP+userName+"&appType=1";
+		String url=Constants.UNLOGINHTTP+userName+"&appType=2";
 		RequestQueue mQueue = Volley.newRequestQueue(mContext);
 		Map<String, String> map = new HashMap<String, String>();
 		StringRequest mJsonRequest = new StringRequest(

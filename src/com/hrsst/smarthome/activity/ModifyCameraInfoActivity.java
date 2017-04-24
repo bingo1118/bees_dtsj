@@ -175,15 +175,14 @@ public class ModifyCameraInfoActivity extends Activity implements OnClickListene
 				Toast.makeText(mContext, R.string.please_input_psw_again, Toast.LENGTH_SHORT).show();
 				return;
 			}
-
-			if (password_new.length()>30|| password_new.charAt(0) == '0') {
-				Toast.makeText(mContext, R.string.device_password_invalid, Toast.LENGTH_SHORT).show();
+			//限制密码为纯数字@@
+			if (password_new.charAt(0) == '0'||!isNumeric(password_new)) {
+				Toast.makeText(mContext, R.string.visitor_pwd_must_digit, Toast.LENGTH_SHORT).show();
 				return;
 			}
-			boolean a=!isNumeric(password_new);
-			//限制密码为纯数字@@
-			if (password_new.length()<6|| !isNumeric(password_new)||password_new.length()>10) {
-				Toast.makeText(mContext, R.string.psw_have_to_be_num, Toast.LENGTH_SHORT).show();
+			//密码长度不能超过9个字符@@
+			if (password_new.length()>9) {
+				Toast.makeText(mContext, R.string.visitor_pwd_to_long, Toast.LENGTH_SHORT).show();
 				return;
 			}
 

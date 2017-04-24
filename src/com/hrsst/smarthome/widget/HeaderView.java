@@ -29,6 +29,11 @@ public class HeaderView extends ImageView {
 		this.mContext = context;
 	}
 
+	/**
+	 * 根据SD卡中的图片刷新显示的图片。。
+	 * @param threeNum
+	 * @param isGray
+	 */
 	public void updateImage(String threeNum, boolean isGray) {
 		updateImage(threeNum, isGray, -1);
 	}
