@@ -119,11 +119,23 @@ public class SharedPreferencesManager {
 		SharedPreferences sf = context.getSharedPreferences(FILE_NAME, context.MODE_PRIVATE);
 		return sf.getString(key, "");
 	}
+	//@@
+	public long getLongData(Context context,String key){
+		SharedPreferences sf = context.getSharedPreferences(FILE_NAME, context.MODE_PRIVATE);
+		return sf.getLong(key,0);
+	}
 	
 	public void putData(Context context,String key,String value){
 		SharedPreferences sf = context.getSharedPreferences(FILE_NAME, context.MODE_PRIVATE);
 		Editor editor = sf.edit();
 		editor.putString(key, value);
+		editor.commit();
+	}
+	//@@
+	public void putData(Context context,String key,long value){
+		SharedPreferences sf = context.getSharedPreferences(FILE_NAME, context.MODE_PRIVATE);
+		Editor editor = sf.edit();
+		editor.putLong(key, value);
 		editor.commit();
 	}
 	

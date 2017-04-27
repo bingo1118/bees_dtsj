@@ -478,6 +478,7 @@ public class ApMonitorActivity extends BaseMonitorActivity implements OnClickLis
 			}
 
 		};
+		//语音时的动画显示。。
 		voice_state.getViewTreeObserver().addOnPreDrawListener(opdl);
 		if (mContact.contactType == P2PValue.DeviceType.NPC) {
 			current_video_mode = P2PValue.VideoMode.VIDEO_MODE_LD;
@@ -490,6 +491,7 @@ public class ApMonitorActivity extends BaseMonitorActivity implements OnClickLis
 			open_door.setVisibility(ImageView.GONE);
 		}
 		updateVideoModeText(current_video_mode);
+		//语音。。
 		if (mContact.contactType != P2PValue.DeviceType.DOORBELL && !isSurpportOpenDoor) {
 			iv_speak.setOnTouchListener(new OnTouchListener() {
 

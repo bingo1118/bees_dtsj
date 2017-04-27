@@ -58,6 +58,7 @@ public class PullToRefreshGridViewAdapter extends BaseAdapter {
 	public PullToRefreshGridViewAdapter(Context mContext,List<UserDevice> list) {
 		this.mContext = mContext;
 		this.list = list;
+//		m = new TreeMap<String, Integer>();//@@
 		socketPos =new TreeSet<Integer>();
 		cameraPos =new TreeSet<Integer>();
 		for(int i=0;i<list.size();i++){//@@
@@ -67,6 +68,7 @@ public class PullToRefreshGridViewAdapter extends BaseAdapter {
 			}
 			if(type==2){
 				cameraPos.add(i);
+//				m.put(list.get(i).getDevMac(), i);//@@
 			}
 		}
 		m = new TreeMap<String, Integer>();
@@ -291,8 +293,8 @@ public class PullToRefreshGridViewAdapter extends BaseAdapter {
 					cameraId = mUserDevice.getDevMac().trim();
 					cameraPwd = mUserDevice.getCameraPwd().trim();
 					P2PHandler.getInstance().getDefenceStates(
-							cameraId, cameraPwd);
-					m.put(cameraId, position);
+							cameraId, cameraPwd);//获取摄像机布防状态。。
+					m.put(cameraId, position);//@@
 					if(onOrOutLine==1){
 						holder3.defence_image.setEnabled(true);
 						holder3.device_list_rela.setBackgroundResource(R.drawable.shouye_sxt_on);
@@ -409,11 +411,12 @@ public class PullToRefreshGridViewAdapter extends BaseAdapter {
     }
     
     public void cameraDefence(int pos,int type){
-    	Message msg = Message.obtain();
-    	msg.arg1 = pos;
-    	msg.arg2 = type;
-    	msg.what=4;
-    	han.sendMessage(msg);
+//    	Message msg = Message.obtain();
+//    	msg.arg1 = pos;
+//    	msg.arg2 = type;
+//    	msg.what=4;
+//    	han.sendMessage(msg);
+    	updateCameraDefence(pos,type);//@@
     }
     
     private void updateDefence(int pos,int type){
