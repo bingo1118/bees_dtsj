@@ -179,7 +179,7 @@ public class Constants {
 		}
 	}
 
-	public static final String CACHE_FOLDER_NAME = "bees";
+	public static final String CACHE_FOLDER_NAME = "dtsj";
 	public static class Update{
 		public static final String SAVE_PATH = Constants.CACHE_FOLDER_NAME+"/apk";
 		public static final String FILE_NAME = Constants.CACHE_FOLDER_NAME+".apk";

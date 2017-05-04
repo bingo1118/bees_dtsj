@@ -337,7 +337,7 @@ public class MainActivity extends Activity implements OnClickListener{
 	public void onClick(View view) {
 		// TODO Auto-generated method stub
 		switch (view.getId()) {
-		case R.id.tv_contact:
+		case R.id.tv_contact://首页。。
 			if(null!=ifLogin&&ifLogin.length()>0&&ifLogin.equals("yes")){
 				currFrag = 0;
 				if (null == mMyDeviceFragment) {
@@ -351,7 +351,7 @@ public class MainActivity extends Activity implements OnClickListener{
 				
 			}
 			break;
-		case R.id.tv_message:
+		case R.id.tv_message://智能。。
 			//if(null!=ifLogin&&ifLogin.length()>0&&ifLogin.equals("yes")){
 				currFrag = 1;
 				if (null == mExperienceFragment) {
@@ -374,7 +374,7 @@ public class MainActivity extends Activity implements OnClickListener{
 //			replaceFragment(R.id.fragContainer, mPersonerFragment, fragTags[2]);
 //			
 //			break;
-		case R.id.tv_more:
+		case R.id.tv_more://消息。。
 			if(null!=ifLogin&&ifLogin.length()>0&&ifLogin.equals("yes")){
 				currFrag = 3;
 				if (null == mMessagesFragment) {

@@ -287,7 +287,7 @@ public class PullToRefreshGridViewAdapter extends BaseAdapter {
 					}else{
 						holder3.ifShare.setVisibility(View.GONE);
 					}
-					holder3.defence_image.setBackgroundResource(R.drawable.defence_anxia);
+//					holder3.defence_image.setBackgroundResource(R.drawable.defence_anxia);
 					holder3.image.setVisibility(View.GONE);
 					holder3.open_or_close_tv.setVisibility(View.GONE);
 					cameraId = mUserDevice.getDevMac().trim();
@@ -321,6 +321,7 @@ public class PullToRefreshGridViewAdapter extends BaseAdapter {
 										mUserDevice.getCameraPwd().trim(),
 										Constants.P2P_SET.REMOTE_DEFENCE_SET.ALARM_SWITCH_ON);
 								defence=1;
+								mUserDevice.setDefence(defence);//@@5.3
 								cameraId = mUserDevice.getDevMac().trim();
 								cameraPwd = mUserDevice.getCameraPwd().trim();
 								View view = mGridView.getChildAt(position- mGridView.getFirstVisiblePosition());//@@
@@ -332,6 +333,7 @@ public class PullToRefreshGridViewAdapter extends BaseAdapter {
 										mUserDevice.getCameraPwd().trim(),
 										Constants.P2P_SET.REMOTE_DEFENCE_SET.ALARM_SWITCH_OFF);
 								defence=0;
+								mUserDevice.setDefence(defence);//@@5.3
 								cameraId = mUserDevice.getDevMac().trim();
 								cameraPwd = mUserDevice.getCameraPwd().trim();
 								View view = mGridView.getChildAt(position- mGridView.getFirstVisiblePosition());//@@
@@ -378,6 +380,7 @@ public class PullToRefreshGridViewAdapter extends BaseAdapter {
 	public void setGridView(GridView mGridView){
 		this.mGridView = mGridView;
 	}
+	
 	
     public void updateItemData(List<UserDevice> item){
     	if(null==item||item.size()<=0){
@@ -605,5 +608,15 @@ public class PullToRefreshGridViewAdapter extends BaseAdapter {
 		static class ViewHolder4 {
 			public RelativeLayout device_list_rela;//@@
 		}
+		//@@
+		public void setList(List<UserDevice> mUserDeviceList) {
+			this.list=mUserDeviceList;
+		}
+
+		public List<UserDevice> getList() {
+			// TODO 自动生成的方法存根
+			return list;
+		}
+		
 
 }
