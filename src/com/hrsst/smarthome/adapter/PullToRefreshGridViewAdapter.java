@@ -8,11 +8,14 @@ import java.util.TreeSet;
 
 
 
+
+
 import com.hrsst.smarthome.dtsj.R;
 import com.hrsst.smarthome.global.Constants;
 import com.hrsst.smarthome.pojo.EnvironmentInfo;
 import com.hrsst.smarthome.pojo.UserDevice;
 import com.hrsst.smarthome.util.BitmapCache;
+import com.hrsst.smarthome.util.NetworkUtil;
 import com.p2p.core.P2PHandler;
 
 import android.annotation.SuppressLint;
@@ -31,6 +34,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class PullToRefreshGridViewAdapter extends BaseAdapter {
@@ -310,6 +314,10 @@ public class PullToRefreshGridViewAdapter extends BaseAdapter {
 					@Override
 					public void onClick(View arg0) {
 						// TODO Auto-generated method stub
+						if(!NetworkUtil.isConnected(mContext)){
+							Toast.makeText(mContext, R.string.net_error_tip, Toast.LENGTH_SHORT).show();
+							return;
+						}
 						UserDevice mUserDevice = list.get(position);
 						int type = mUserDevice.getDevType();
 						int defence = mUserDevice.getDefence();
