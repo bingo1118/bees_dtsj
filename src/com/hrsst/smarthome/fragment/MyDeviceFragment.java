@@ -152,7 +152,7 @@ public class MyDeviceFragment extends Fragment implements OnClickListener{
 	private BroadcastReceiver mReceiver1 = new BroadcastReceiver() {
 
 		@Override
-		public void onReceive(Context arg0, Intent arg1) {
+		public  synchronized void onReceive(Context arg0, Intent arg1) {
 			// TODO Auto-generated method stub
 			//获取插座是否关联摄像头
 			if(arg1.getAction().equals("Constants.Action.unFindBinderCameraAndSocket")){
@@ -214,48 +214,67 @@ public class MyDeviceFragment extends Fragment implements OnClickListener{
 		@Override
 		public void onReceive(Context arg0, Intent arg1) {
 			// TODO Auto-generated method stub
-			if(arg1.getAction().equals("REFRESH_DEV_INFO")){
+			String resultBroadcast=arg1.getAction();//@@5.11
+			if(resultBroadcast.equals("REFRESH_DEV_INFO")){
 				getUserDev(1);
 			}
 			
-			if (arg1.getAction().equals(Constants.P2P.RET_SET_REMOTE_DEFENCE)) {
-				int state = arg1.getIntExtra("state", -1);
-				if(state==0||state==1){
-					String contactId = mPullToRefreshGridViewAdapter.getCameraId();
-					String contactPwd = mPullToRefreshGridViewAdapter.getCameraPwd();
-					if(null!=contactId&&contactId.length()>0&&null!=contactPwd&&contactPwd.length()>0){
-						P2PHandler.getInstance().getDefenceStates(
-								contactId, contactPwd);
+			if (resultBroadcast.equals(Constants.P2P.RET_SET_REMOTE_DEFENCE)) {
+				try{
+					int state = arg1.getIntExtra("state", -1);
+					if(state==0||state==1){
+//						String contactId = mPullToRefreshGridViewAdapter.getCameraId();
+//						String contactPwd = mPullToRefreshGridViewAdapter.getCameraPwd();
+//						if(null!=contactId&&contactId.length()>0&&null!=contactPwd&&contactPwd.length()>0){
+//							P2PHandler.getInstance().getDefenceStates(
+//									contactId, contactPwd);
+//						}//@@5.10
+						String contactId =arg1.getStringExtra("contactId");//@@5.10
+						if(state==0||state==1){
+							Integer[] cameraPos = mPullToRefreshGridViewAdapter.getCameraPos();
+							if(null!=cameraPos&&cameraPos.length>0){
+								for(int i=0;i<cameraPos.length;i++){
+									UserDevice mUserDevice = mUserDeviceList.get(cameraPos[i]);
+									if(mUserDevice.getDevMac().equals(contactId)){
+										mPullToRefreshGridViewAdapter.updateCameraDefine(cameraPos[i]);
+										P2PHandler.getInstance().getDefenceStates(
+												contactId, mUserDevice.getCameraPwd());//@@5.12
+										break;
+									}
+								}
+							}
+							
+						}
 					}
+				}catch(Exception e){
+					return;
 				}
+				
 			}
 			
-			if (arg1.getAction().equals(
+			if (resultBroadcast.equals(
 					Constants.P2P.RET_GET_REMOTE_DEFENCE)) {
-				int state = arg1.getIntExtra("state", -1);
-				String contactId = arg1.getStringExtra("contactId");
-				System.out.println("state="+state);
-				if((state==0||state==1)&&null!=contactId&&contactId.length()>0){
-					Map<String, Integer> map = mPullToRefreshGridViewAdapter.getPos();
-					if(null!=map&&map.size()>0){
-						String indexStr = map.get(contactId)+"";
-						if(null!=indexStr&&indexStr.length()>0){
-							int index = map.get(contactId);
-							mPullToRefreshGridViewAdapter.setGridView(mGridView);
-							mPullToRefreshGridViewAdapter.cameraDefence(index, state);
-							camaradefencenum++;
-							if(camaradefencenum==map.size()){
-								isdefenced=true;//@@摄像机布防按钮加载完成
-								camaradefencenum=0;//@@
+				try{
+					int state = arg1.getIntExtra("state", -1);
+					String contactId = arg1.getStringExtra("contactId");
+					System.out.println("state="+state);
+					if((state==0||state==1)&&null!=contactId&&contactId.length()>0){
+						Map<String, Integer> map = mPullToRefreshGridViewAdapter.getPos();
+						if(null!=map&&map.size()>0){
+							String indexStr = map.get(contactId)+"";
+							if(null!=indexStr&&indexStr.length()>0){
+								int index = map.get(contactId);
+								mPullToRefreshGridViewAdapter.setGridView(mGridView);
+								mPullToRefreshGridViewAdapter.cameraDefence(index, state);
 							}
 						}
 					}
+				}catch(Exception e){
+					return;//@@5.12
 				}
-				
-//				isdefenced=true;//@@摄像机布防按钮加载完成
 			}
 			
-			if(arg1.getAction().equals(Constants.Action.GET_FRIENDS_STATE)){
+			if(resultBroadcast.equals(Constants.Action.GET_FRIENDS_STATE)){
 				Map<String,Integer> li = (Map<String,Integer>) arg1.getSerializableExtra("contactList");
 				if(null!=mUserDeviceList&&mUserDeviceList.size()>0&&null!=li&&li.size()>0){
 					Log.v("li", li.size()+"");
@@ -277,7 +296,7 @@ public class MyDeviceFragment extends Fragment implements OnClickListener{
 			}
 			
 			//删除设备回复包
-			if(arg1.getAction().equals("Constants.Action.unActionCamera")){
+			if(resultBroadcast.equals("Constants.Action.unActionCamera")){
 				byte[] datas = arg1.getExtras().getByteArray("datasByte");
 				UnPackageFromServer mUnPackageFromServer = UnPackServer.unActionCamera(datas);
 				if(mUnPackageFromServer!=null){
@@ -300,7 +319,7 @@ public class MyDeviceFragment extends Fragment implements OnClickListener{
 				}
 			}
 			//获取用户设备回复包
-			if(arg1.getAction().equals("Constants.Action.unGetUserDev")){
+			if(resultBroadcast.equals("Constants.Action.unGetUserDev")){
 				byte[] datas = arg1.getExtras().getByteArray("datasByte");
 				UnPackageFromServer mUnPackageFromServer = UnPackServer.unGetUserDev(datas);
 				if(mUnPackageFromServer!=null){
@@ -334,14 +353,14 @@ public class MyDeviceFragment extends Fragment implements OnClickListener{
 			}
 			
 			//接收布防或者撤防命令
-			if(arg1.getAction().equals("DEFENCE_ACTION")){
+			if(resultBroadcast.equals("DEFENCE_ACTION")){
 				defencePos = arg1.getExtras().getInt("defencePos");
 				int defenceType = arg1.getExtras().getInt("defenceType");
 				String devMac = arg1.getExtras().getString("devMac");
 				byte[] orderSend =SendServerOrder.Defence(userNum, devMac, (byte)defenceType);
 				mSocketUDPClient.sendMsg(orderSend);
 			}
-			if(arg1.getAction().equals("Constants.Action.unDefence")){
+			if(resultBroadcast.equals("Constants.Action.unDefence")){
 				byte[] datas = arg1.getExtras().getByteArray("datasByte");
 				UnPackageFromServer mUnPackageFromServer = UnPackServer.unDefence(datas);
 				int result = mUnPackageFromServer.defence;
@@ -349,14 +368,14 @@ public class MyDeviceFragment extends Fragment implements OnClickListener{
 				mPullToRefreshGridViewAdapter.defence(defencePos,result);
 			}
 			
-			if (arg1.getAction().equals("Constants.Action.DATA_CHANGE")){
+			if (resultBroadcast.equals("Constants.Action.DATA_CHANGE")){
 				byte[] datas = arg1.getExtras().getByteArray("datas");
 				UnPackageFromServer mUnPackageFromServer = new UnPackServer().unGetDeviceStatesListPack(datas);
 				List<Map<String,DeviceStates>> listMap = mUnPackageFromServer.deviceStatesList;
 				um(listMap);
 			}
 
-			if (arg1.getAction().equals("Constants.Action.unGetDeviceStatesListPack")){
+			if (resultBroadcast.equals("Constants.Action.unGetDeviceStatesListPack")){
 				byte[] datas = arg1.getExtras().getByteArray("datasByte");
 				if(datas!=null&&datas.length>0){
 					UnPackageFromServer mUnPackageFromServer = new UnPackServer().unGetDeviceStatesListPack(datas);
@@ -367,12 +386,12 @@ public class MyDeviceFragment extends Fragment implements OnClickListener{
 				}
 			}
 			
-			if (arg1.getAction().equals("Constants.Action.unServerACKPack")){
+			if (resultBroadcast.equals("Constants.Action.unServerACKPack")){
 				byte[] datas = arg1.getExtras().getByteArray("datasByte");
 				new UnPackServer().unServerACKPack(datas);
 			}
 			
-			if(arg1.getAction().equals("FIND_NEW_DEVICE_NUMBER")){
+			if(resultBroadcast.equals("FIND_NEW_DEVICE_NUMBER")){
 				wifiList = arg1.getExtras().getStringArrayList("count");
 				if(wifiList.size()>0){
 					new_dev_rela.setVisibility(View.GONE);
@@ -761,9 +780,8 @@ public class MyDeviceFragment extends Fragment implements OnClickListener{
 	public void onStart() {
 		// TODO Auto-generated method stub
 		super.onStart();
-		//getDevice(userNum,"");
-//		mPullToRefreshGridViewAdapter=null;//@@5.3
-		getUserDev(0);//@@5.3
+			getUserDev(0);//@@5.3
+		
 		timer = new Timer();
 		task = new TimerTask() {
 		       public void run () {
@@ -772,8 +790,7 @@ public class MyDeviceFragment extends Fragment implements OnClickListener{
 		       handler.sendMessage(message);
 		   }
 		};
-		timer.schedule(task,1000); 
-		
+		timer.schedule(task,3000); 
 	}
 
 	
@@ -829,13 +846,15 @@ public class MyDeviceFragment extends Fragment implements OnClickListener{
 	 * @param i 
 	 */
 	private void refreshGridview(int i) {
-		if(i==0||mPullToRefreshGridViewAdapter.getList().size()!=mUserDeviceList.size()){
+		if(i==0||mPullToRefreshGridViewAdapter==null||mPullToRefreshGridViewAdapter.getList().size()!=mUserDeviceList.size()){
 			mPullToRefreshGridViewAdapter = new PullToRefreshGridViewAdapter(mContext,mUserDeviceList);
 			mPullToRefreshGridViewAdapter.setGridView(mGridView);
 			mGridView.setAdapter(mPullToRefreshGridViewAdapter);
+			mPullToRefreshGridViewAdapter.isRefresh=true;//@@5.10
 		}else{
-			mPullToRefreshGridViewAdapter.setList(mUserDeviceList);
+//			mPullToRefreshGridViewAdapter.setList(mUserDeviceList);//@@5.12
 			mPullToRefreshGridViewAdapter.notifyDataSetChanged();
+			mPullToRefreshGridViewAdapter.isRefresh=false;//@@5.10
 		}
 		mPullToRefreshGridView.onRefreshComplete();
 		mSmartSocketList = new ArrayList<UserDevice>();//智能插座列表。。

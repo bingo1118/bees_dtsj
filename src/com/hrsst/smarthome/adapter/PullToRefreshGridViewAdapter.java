@@ -1,5 +1,6 @@
 package com.hrsst.smarthome.adapter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -9,6 +10,11 @@ import java.util.TreeSet;
 
 
 
+
+
+
+
+import cn.itguy.zxingportrait.control.BeepManager;
 
 import com.hrsst.smarthome.dtsj.R;
 import com.hrsst.smarthome.global.Constants;
@@ -58,6 +64,8 @@ public class PullToRefreshGridViewAdapter extends BaseAdapter {
 	
 	String cameraId;
 	String cameraPwd;
+	
+	public boolean isRefresh=false;//@@5.10
 
 	public PullToRefreshGridViewAdapter(Context mContext,List<UserDevice> list) {
 		this.mContext = mContext;
@@ -72,6 +80,8 @@ public class PullToRefreshGridViewAdapter extends BaseAdapter {
 			}
 			if(type==2){
 				cameraPos.add(i);
+				P2PHandler.getInstance().getDefenceStates(
+						list.get(i).getDevMac(), list.get(i).getCameraPwd());//@@5.12
 //				m.put(list.get(i).getDevMac(), i);//@@
 			}
 		}
@@ -292,6 +302,7 @@ public class PullToRefreshGridViewAdapter extends BaseAdapter {
 						holder3.ifShare.setVisibility(View.GONE);
 					}
 //					holder3.defence_image.setBackgroundResource(R.drawable.defence_anxia);
+					
 					holder3.image.setVisibility(View.GONE);
 					holder3.open_or_close_tv.setVisibility(View.GONE);
 					cameraId = mUserDevice.getDevMac().trim();
@@ -318,6 +329,7 @@ public class PullToRefreshGridViewAdapter extends BaseAdapter {
 							Toast.makeText(mContext, R.string.net_error_tip, Toast.LENGTH_SHORT).show();
 							return;
 						}
+						Toast.makeText(mContext, "设置中，请稍等", 200).show();//@5.11
 						UserDevice mUserDevice = list.get(position);
 						int type = mUserDevice.getDevType();
 						int defence = mUserDevice.getDefence();
@@ -330,11 +342,10 @@ public class PullToRefreshGridViewAdapter extends BaseAdapter {
 										Constants.P2P_SET.REMOTE_DEFENCE_SET.ALARM_SWITCH_ON);
 								defence=1;
 								mUserDevice.setDefence(defence);//@@5.3
-								cameraId = mUserDevice.getDevMac().trim();
-								cameraPwd = mUserDevice.getCameraPwd().trim();
-								View view = mGridView.getChildAt(position- mGridView.getFirstVisiblePosition());//@@
-								view.findViewById(R.id.defence_image).setBackgroundResource(R.drawable.defence_on);//@@
-//								holder3.defence_image.setBackgroundResource(R.drawable.defence_on);
+//								cameraId = mUserDevice.getDevMac().trim();
+//								cameraPwd = mUserDevice.getCameraPwd().trim();
+//								View view = mGridView.getChildAt(position- mGridView.getFirstVisiblePosition());//@@
+//								view.findViewById(R.id.defence_image).setBackgroundResource(R.drawable.defence_on);//@@
 							}else{
 								P2PHandler.getInstance().setRemoteDefence(
 										mUserDevice.getDevMac().trim(),
@@ -342,16 +353,42 @@ public class PullToRefreshGridViewAdapter extends BaseAdapter {
 										Constants.P2P_SET.REMOTE_DEFENCE_SET.ALARM_SWITCH_OFF);
 								defence=0;
 								mUserDevice.setDefence(defence);//@@5.3
-								cameraId = mUserDevice.getDevMac().trim();
-								cameraPwd = mUserDevice.getCameraPwd().trim();
-								View view = mGridView.getChildAt(position- mGridView.getFirstVisiblePosition());//@@
-								view.findViewById(R.id.defence_image).setBackgroundResource(R.drawable.defence_off);//@@
-//								holder3.defence_image.setBackgroundResource(R.drawable.defence_off);
+//								cameraId = mUserDevice.getDevMac().trim();
+//								cameraPwd = mUserDevice.getCameraPwd().trim();
+//								View view = mGridView.getChildAt(position- mGridView.getFirstVisiblePosition());//@@
+//								view.findViewById(R.id.defence_image).setBackgroundResource(R.drawable.defence_off);//@@
 							}
-						
+//							View view = mGridView.getChildAt(3);//@@
+//							boolean a=view.findViewById(R.id.defence_image).isEnabled();
+//							View view2 = mGridView.getChildAt(0);//@@
+//							boolean c=view2.findViewById(R.id.defence_image).isEnabled();
+//							View view3 = mGridView.getChildAt(0);//@@
+//							boolean d=view3.findViewById(R.id.defence_image).isEnabled();
 					}
 				});
-				
+					
+					int isdefence=mUserDevice.getDefence();//@@5.12
+					switch (isdefence) {//@@5.12
+					case 1:
+						holder3.defence_image.setBackgroundResource(R.drawable.defence_on);
+						holder3.defence_image.setEnabled(true);
+						break;
+					case 0:
+						holder3.defence_image.setBackgroundResource(R.drawable.defence_off);
+						holder3.defence_image.setEnabled(true);
+						break;
+					case 2:
+						holder3.defence_image.setBackgroundResource(R.drawable.defence_anxia);
+						holder3.defence_image.setEnabled(false);
+						break;
+					}
+//					if(isRefresh){//@@5.10
+//						holder3.defence_image.setEnabled(false);//@@5.8
+//					}
+//					else{
+//						holder3.defence_image.setEnabled(true);//@@5.11
+//						holder3.defence_image.setClickable(true);//@@5.11
+//					}//@@5.12
 			}
 		}else{
 			holder4=null;
@@ -453,19 +490,28 @@ public class PullToRefreshGridViewAdapter extends BaseAdapter {
     	if (mGridView == null){
             return;
         }
-    	View view = mGridView.getChildAt(pos- mGridView.getFirstVisiblePosition());//@@
-    	if(view==null){
-    		 return;
+    	if(pos<=mGridView.getLastVisiblePosition()){//@@5.12
+    		View view = mGridView.getChildAt(pos- mGridView.getFirstVisiblePosition());//@@
+        	if(view==null){
+        		 return;
+        	}
+        	UserDevice mUserDevice = list.get(pos);
+        	mUserDevice.setDefence(type);
+        	list.set(pos, mUserDevice);
+        	ImageView defence_image = (ImageView) view.findViewById(R.id.defence_image);
+        	if(type==1){
+        		defence_image.setBackgroundResource(R.drawable.defence_on);
+    		}else{
+    			defence_image.setBackgroundResource(R.drawable.defence_off);
+    		}
+        	defence_image.setEnabled(true);//@@5.8
+    	}else{
+    		UserDevice mUserDevice = list.get(pos);
+        	mUserDevice.setDefence(type);
+        	list.set(pos, mUserDevice);
+        	notifyDataSetChanged();
     	}
-    	UserDevice mUserDevice = list.get(pos);
-    	mUserDevice.setDefence(type);
-    	list.set(pos, mUserDevice);
-    	ImageView defence_image = (ImageView) view.findViewById(R.id.defence_image);
-    	if(type==1){
-    		defence_image.setBackgroundResource(R.drawable.defence_on);
-		}else{
-			defence_image.setBackgroundResource(R.drawable.defence_off);
-		}
+    	
     }
     
 	@SuppressLint("HandlerLeak")
@@ -504,7 +550,7 @@ public class PullToRefreshGridViewAdapter extends BaseAdapter {
     	TextView open_or_close_tv = (TextView) view.findViewById(R.id.open_or_close_tv);
     	TextView text = (TextView) view.findViewById(R.id.mTextView);
     	RelativeLayout device_list_rela = (RelativeLayout) view.findViewById(R.id.device_list_rela);
-    	//此处代码导致布防图标混乱@@
+    	//此处代码导致布防图标混乱@@5.12
 //    	switch (((UserDevice) obj).getDefence()) {
 //		case 1:
 //			defence_image.setBackgroundResource(R.drawable.defence_on);
@@ -519,7 +565,7 @@ public class PullToRefreshGridViewAdapter extends BaseAdapter {
 		image.setVisibility(View.GONE);
 		open_or_close_tv.setVisibility(View.GONE);
 		if(((UserDevice) obj).getLightOnOrOutLine()==1){
-			defence_image.setEnabled(true);
+//			defence_image.setEnabled(true);//@@5.8
 			device_list_rela.setBackgroundResource(R.drawable.shouye_sxt_on);
 		}else{
 			defence_image.setEnabled(false);
@@ -623,8 +669,29 @@ public class PullToRefreshGridViewAdapter extends BaseAdapter {
 
 		public List<UserDevice> getList() {
 			// TODO 自动生成的方法存根
+			if(list==null){
+				list=new ArrayList<UserDevice>();//@@5.11
+			}
 			return list;
 		}
-		
+
+		//@@5.10点击布防后修改状态
+		public void updateCameraDefine(Integer integer) {
+			UserDevice mUserDevice = list.get(integer);
+			int defence = mUserDevice.getDefence();
+				if(defence==1){
+//					defence=1;
+//					mUserDevice.setDefence(defence);//@@5.3
+					View view = mGridView.getChildAt(integer- mGridView.getFirstVisiblePosition());//@@
+					view.findViewById(R.id.defence_image).setBackgroundResource(R.drawable.defence_on);//@@
+				}else{
+//					defence=0;
+//					mUserDevice.setDefence(defence);//@@5.3
+					View view = mGridView.getChildAt(integer- mGridView.getFirstVisiblePosition());//@@
+					view.findViewById(R.id.defence_image).setBackgroundResource(R.drawable.defence_off);//@@
+				}
+//				notifyDataSetChanged();//@@5.12
+				Toast.makeText(mContext, R.string.setting_su, Toast.LENGTH_SHORT).show();
+		}
 
 }
