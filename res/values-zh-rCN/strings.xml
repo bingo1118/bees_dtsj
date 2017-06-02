@@ -606,7 +606,7 @@
      <string name="addcamerathirdactivity_input_wifi_psw">请输入Wi-Fi密码</string>
      <string name="adddevicestepactivity_add_smart_socket_first">请先添加智能插座</string>
      <string name="please_choose_smart_socket">请选择智能插座</string>
-     <string name="configuration_failed">配置失败...</string>
+     <string name="configuration_failed">配置失败</string>
      <string name="device_have_configuration">该设备已经配置过...</string>
      <string name="configuration_success">配置成功</string>
      <string name="please_input_location">请输入安放的位置</string>
@@ -819,4 +819,12 @@
     <string name="no_more_then_ten_words">设备名称不能超过8个字符</string>
     <string name="psw_have_to_be_num">密码必须为6到15位</string>
     <string name="close_alarm_voice">关闭声音</string>
+    <string name="setting_wait">设置中，请稍等</string>
+    <string name="sunday">星期日</string>
+    <string name="monday">星期一</string>
+    <string name="tuesday">星期二</string>
+    <string name="wednesday">星期三</string>
+    <string name="thurday">星期四</string>
+    <string name="friday">星期五</string>
+    <string name="saturday">星期六</string>
 </resources>

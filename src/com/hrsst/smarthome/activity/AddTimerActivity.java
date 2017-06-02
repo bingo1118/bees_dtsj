@@ -188,17 +188,26 @@ public class AddTimerActivity extends Activity implements OnClickListener{
 					li.add(i);
 				}
 				Collections.sort(li);
-				for(int j=0;j<li.size();j++){
-					sb.append(Constants.WEEKEN_STRING[li.get(j)]).append(" ");
+				if(getResources().getConfiguration().locale.getCountry().equals("CN")){
+					for(int j=0;j<li.size();j++){
+						sb.append(Constants.WEEKEN_STRING[li.get(j)]).append(" ");
+					}
+				}else{
+					for(int j=0;j<li.size();j++){
+						sb.append(Constants.WEEKEN_STRING_EN[li.get(j)]).append(" ");
+					}//@@5.26
 				}
-				if(Constants.EVERY_DAY.equals(sb.toString())){
-					repetition_tv.setText(Constants.WeekType.EVERY_DAY_TYPE);
+				if(Constants.EVERY_DAY.equals(sb.toString())||Constants.EVERY_DAY_EN.equals(sb.toString())){//@@5.26
+					//repetition_tv.setText(Constants.WeekType.EVERY_DAY_TYPE);
+					repetition_tv.setText(R.string.everyday);//@@5.26
 					orderDatas[2] = 0x01;
-				}else if(Constants.WORKING_DAY.equals(sb.toString())){
-					repetition_tv.setText(Constants.WeekType.WORKING_DAY_TYPE);
+				}else if(Constants.WORKING_DAY.equals(sb.toString())||Constants.WORKING_DAY_EN.equals(sb.toString())){//@@5.26
+//					repetition_tv.setText(Constants.WeekType.WORKING_DAY_TYPE);
+					repetition_tv.setText(R.string.workday);//@@5.26
 					orderDatas[2] = 0x01;
-				}else if(Constants.WEEKEN_DAY.equals(sb.toString())){
-					repetition_tv.setText(Constants.WeekType.WEEKEN_DAY_TYPE);
+				}else if(Constants.WEEKEN_DAY.equals(sb.toString())||Constants.WEEKEN_DAY_EN.equals(sb.toString())){//@@5.26
+//					repetition_tv.setText(Constants.WeekType.WEEKEN_DAY_TYPE);
+					repetition_tv.setText(R.string.weekend);//@@5.26
 					orderDatas[2] = 0x01;
 				}else{
 					repetition_tv.setText(sb.toString());
@@ -400,15 +409,24 @@ public class AddTimerActivity extends Activity implements OnClickListener{
 				}
 				firstSb = new StringBuilder();
 				Collections.sort(li);
-				for(int j=0;j<li.size();j++){
-					firstSb.append(Constants.WEEKEN_STRING[li.get(j)]).append(" ");
-				}
-				if(Constants.EVERY_DAY.equals(firstSb.toString())){
-					repetition_tv.setText(Constants.WeekType.EVERY_DAY_TYPE);
-				}else if(Constants.WORKING_DAY.equals(firstSb.toString())){
-					repetition_tv.setText(Constants.WeekType.WORKING_DAY_TYPE);
-				}else if(Constants.WEEKEN_DAY.equals(firstSb.toString())){
-					repetition_tv.setText(Constants.WeekType.WEEKEN_DAY_TYPE);
+				if(getResources().getConfiguration().locale.getCountry().equals("CN")){
+					for(int j=0;j<li.size();j++){
+						firstSb.append(Constants.WEEKEN_STRING[li.get(j)]).append(" ");
+					}
+				}else{
+					for(int j=0;j<li.size();j++){
+						firstSb.append(Constants.WEEKEN_STRING_EN[li.get(j)]).append(" ");
+					}
+				}//@@5.26
+				if(Constants.EVERY_DAY.equals(firstSb.toString())||Constants.EVERY_DAY_EN.equals(firstSb.toString())){//@@5.26
+//					repetition_tv.setText(Constants.WeekType.EVERY_DAY_TYPE);
+					repetition_tv.setText(R.string.everyday);//@@5.26
+				}else if(Constants.WORKING_DAY.equals(firstSb.toString())||Constants.WORKING_DAY_EN.equals(firstSb.toString())){//@@5.26
+//					repetition_tv.setText(Constants.WeekType.WORKING_DAY_TYPE);
+					repetition_tv.setText(R.string.workday);//@@5.26
+				}else if(Constants.WEEKEN_DAY.equals(firstSb.toString())||Constants.WEEKEN_DAY_EN.equals(firstSb.toString())){//@@5.26
+//					repetition_tv.setText(Constants.WeekType.WEEKEN_DAY_TYPE);
+					repetition_tv.setText(R.string.weekend);//@@5.26
 				}else{
 					SimpleDateFormat d = new SimpleDateFormat("HH:mm:ss");
 				    String dateStr = d.format(Long.valueOf(System.currentTimeMillis()));
@@ -418,9 +436,11 @@ public class AddTimerActivity extends Activity implements OnClickListener{
 				    long typeTime = statTime-nowTime;
 				    long typeTime1 = lastTime-nowTime;
 				    if(typeTime>=0&&typeTime1>=0){
-				    	repetition_tv.setText(Constants.WeekType.TODAY);
+//				    	repetition_tv.setText(Constants.WeekType.TODAY);
+				    	repetition_tv.setText(R.string.today);//@@5.26
 				    }else{
-				    	repetition_tv.setText(Constants.WeekType.TOMORROW);
+//				    	repetition_tv.setText(Constants.WeekType.TOMORROW);
+				    	repetition_tv.setText(R.string.tomorrow);//@@5.26
 				    }
 				}
 			}
@@ -471,7 +491,11 @@ public class AddTimerActivity extends Activity implements OnClickListener{
 		Animation anim = AnimationUtils.loadAnimation(mContext,
 				R.anim.slide_in_bottom);
 		diy_timer_list.startAnimation(anim);
-		mWeekenAdapter = new WeekenAdapter(mContext,by,Constants.WEEKEN_STRING);
+		if(getResources().getConfiguration().locale.getCountry().equals("CN")){
+			mWeekenAdapter = new WeekenAdapter(mContext,by,Constants.WEEKEN_STRING);
+		}else{
+			mWeekenAdapter = new WeekenAdapter(mContext,by,Constants.WEEKEN_STRING_EN);
+		}//@@5.26
 		diy_list.setAdapter(mWeekenAdapter);
 	}
 	

@@ -148,15 +148,24 @@ public class TimerListAdapter extends BaseAdapter{
 		}
 		if(li.size()>0){
 			StringBuilder sb = new StringBuilder();
-			for(int j=0;j<li.size();j++){
-				sb.append(Constants.WEEKEN_STRING[li.get(j)]).append(" ");
-			}
-			if(Constants.EVERY_DAY.equals(sb.toString())){
-				holder.week_list.setText(Constants.WeekType.EVERY_DAY_TYPE);
-			}else if(Constants.WORKING_DAY.equals(sb.toString())){
-				holder.week_list.setText(Constants.WeekType.WORKING_DAY_TYPE);
-			}else if(Constants.WEEKEN_DAY.equals(sb.toString())){
-				holder.week_list.setText(Constants.WeekType.WEEKEN_DAY_TYPE);
+			if(mContext.getResources().getConfiguration().locale.getCountry().equals("CN")){
+				for(int j=0;j<li.size();j++){
+					sb.append(Constants.WEEKEN_STRING[li.get(j)]).append(" ");
+				}
+			}else{
+				for(int j=0;j<li.size();j++){
+					sb.append(Constants.WEEKEN_STRING_EN[li.get(j)]).append(" ");
+				}
+			}//@@5.26
+			if(Constants.EVERY_DAY.equals(sb.toString())||Constants.EVERY_DAY_EN.equals(sb.toString())){//@@5.26
+//				holder.week_list.setText(Constants.WeekType.EVERY_DAY_TYPE);
+				holder.week_list.setText(R.string.everyday);//@@5.26
+			}else if(Constants.WORKING_DAY.equals(sb.toString())||Constants.WORKING_DAY_EN.equals(sb.toString())){//@@5.26
+//				holder.week_list.setText(Constants.WeekType.WORKING_DAY_TYPE);
+				holder.week_list.setText(R.string.workday);//@@5.26
+			}else if(Constants.WEEKEN_DAY.equals(sb.toString())||Constants.WEEKEN_DAY_EN.equals(sb.toString())){//@@5.26
+//				holder.week_list.setText(Constants.WeekType.WEEKEN_DAY_TYPE);
+				holder.week_list.setText(R.string.weekend);//@@.5.26
 			}else{
 				holder.week_list.setText(sb.toString());
 			}
@@ -169,13 +178,17 @@ public class TimerListAdapter extends BaseAdapter{
 		    long typeTime = statTime-nowTime;
 		    long typeTime1 = endTime-nowTime;
 		    if(statTime==0&&typeTime1>0){
-		    	holder.week_list.setText(Constants.WeekType.TODAY);
+//		    	holder.week_list.setText(Constants.WeekType.TODAY);
+		    	holder.week_list.setText(R.string.today);//@@5.26
 		    }else if(endTime==0&&typeTime>0){
-		    	holder.week_list.setText(Constants.WeekType.TODAY);
+//		    	holder.week_list.setText(Constants.WeekType.TODAY);
+		    	holder.week_list.setText(R.string.today);//@@5.26
 		    }else if(typeTime>=0&&typeTime1>=0){
-		    	holder.week_list.setText(Constants.WeekType.TODAY);
+//		    	holder.week_list.setText(Constants.WeekType.TODAY);
+		    	holder.week_list.setText(R.string.today);//@@5.26
 		    }else {
-		    	holder.week_list.setText(Constants.WeekType.TOMORROW);
+//		    	holder.week_list.setText(Constants.WeekType.TOMORROW);
+		    	holder.week_list.setText(R.string.tomorrow);//@@5.26
 		    }
 		   
 		}

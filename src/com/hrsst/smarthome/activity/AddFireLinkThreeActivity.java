@@ -103,7 +103,7 @@ public class AddFireLinkThreeActivity extends Activity {
 				} else if (studyResult.equals("repetition")) {
 					Toast.makeText(context, R.string.this_device_have_configurantion, Toast.LENGTH_SHORT).show();
 				} else {
-					Toast.makeText(context, R.string.configuration_success, Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, R.string.configuration_success, Toast.LENGTH_SHORT).show();			
 				}
 				mSocketUDP.sendMsg(SendServerOrder.ClientACKOrder(device,seq));//手机回复包@@
 				if (cdialog.isShowing()) {

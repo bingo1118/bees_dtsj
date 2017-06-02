@@ -1,5 +1,6 @@
 package com.hrsst.smarthome.activity;
 
+import com.hrsst.smarthome.adapter.PullToRefreshGridViewAdapter;
 import com.hrsst.smarthome.dtsj.R;
 import com.hrsst.smarthome.global.Constants;
 import com.hrsst.smarthome.net.SocketUDP;
@@ -10,6 +11,7 @@ import com.hrsst.smarthome.pojo.UnPackageFromServer;
 import com.hrsst.smarthome.pojo.UserDevice;
 import com.hrsst.smarthome.util.SharedPreferencesManager;
 import com.hrsst.smarthome.widget.NormalDialog;
+import com.mob.tools.gui.PullToRefreshGridAdapter;
 import com.p2p.core.P2PHandler;
 
 import android.app.Activity;
@@ -84,6 +86,7 @@ public class ModifyCameraInfoActivity extends Activity implements OnClickListene
 //						contact.contactPassword = password_new;
 						contact.contactPassword = mUserDevice.getCameraPwd();//@@5.4
 						Toast.makeText(mContext, R.string.change_success, Toast.LENGTH_SHORT).show();
+						PullToRefreshGridViewAdapter.updateVIdeoDevList(contact.contactId,contact.contactName,contact.contactPassword);//@@5.23
 						finishThis();
 						break;
 					case "failed":

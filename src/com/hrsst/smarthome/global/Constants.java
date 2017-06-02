@@ -43,6 +43,11 @@ public class Constants {
 	public static final String WORKING_DAY = "星期一 星期二 星期三 星期四 星期五 ";
 	public static final String WEEKEN_DAY = "星期日 星期六 ";
 	
+	public static final String[] WEEKEN_STRING_EN = {"Sun","Mon","Tue","Wed","Thu","Fri","Sat"};
+	public static final String EVERY_DAY_EN = "Sun Mon Tue Wed Thu Fri Sat ";
+	public static final String WORKING_DAY_EN = "Mon Tue Wed Thu Fri ";
+	public static final String WEEKEN_DAY_EN = "Sun Sat ";
+	
 	public static class RegisterType{
 		public static final int PHONE=0;
 		public static final int EMALL=1;

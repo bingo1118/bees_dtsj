@@ -160,7 +160,8 @@ public class MainThread {
 			long now_time = System.currentTimeMillis();
 			//1000 * 60 * 60 * 12
 			//间隔12个小时提示更新
-			if ((now_time - last_check_update_time) > 1000 * 60 * 60 * 12) {
+//			if ((now_time - last_check_update_time) > 1000 * 60 * 60 * 12) {
+				if ((now_time - last_check_update_time) > 1000) {//@@5.25
 				SharedPreferencesManager.getInstance()
 						.putLastAutoCheckUpdateTime(now_time, MyApp.app);
 				// 创建地址对象
@@ -201,12 +202,21 @@ public class MainThread {
 					int serverCode = Integer.parseInt(mUpdateInfo.versionCode);
 	
 					if (serverCode > getlocalVersion()) {
+						long a =SharedPreferencesManager.getInstance().getLongData(mContext, "IGNOREVERSION");
+							if(last_check_update_time==-1&&(long)serverCode==SharedPreferencesManager.getInstance().getLongData(mContext, "IGNOREVERSION")){//@@5.25
+								return;
+							}//@@5.25
 						Intent i = new Intent("Constants.Action.ACTION_UPDATE");
 						i.putExtra("url", mUpdateInfo.url);
 						i.putExtra("message", mUpdateInfo.message);
+						i.putExtra("version", serverCode);//@@5.25
 						MyApp.app.sendBroadcast(i);
 					}
-					if(last_check_update_time==-1&&serverCode<=getlocalVersion()){
+//					if(last_check_update_time==-1&&serverCode<=getlocalVersion()){
+					if(last_check_update_time!=-1&&serverCode<=getlocalVersion()){//@@5.25
+//						if(last_check_update_time==-1){//@@5.25
+//							return;
+//						}//@@5.25
 						Intent i = new Intent("Constants.Action.ACTION_UPDATE_NO");
 						i.putExtra("message", "已是最新版本"+"(版本号："+mUpdateInfo.versionName+")");//@@5.8
 						MyApp.app.sendBroadcast(i);

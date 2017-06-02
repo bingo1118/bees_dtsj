@@ -117,6 +117,7 @@ public class MainActivity extends Activity implements OnClickListener{
 			}
 			tab_component.setBackgroundResource(R.drawable.daohang1);
 			replaceFragment(R.id.fragContainer, mMyDeviceFragment, fragTags[0]);
+			mMyDeviceFragment.isReplaceFragment();//@@5.26
 
 			inService = new Intent(mContext,MainService.class);
 			inService.setAction("com.hrsst.smarthome.thread.MAINSERVICE");
@@ -131,6 +132,7 @@ public class MainActivity extends Activity implements OnClickListener{
 						new SettingListener());
 				connect();
 			}
+			new MyTast().execute("1");//@@5.25
 		}else{
 			drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 			if (null == mPersonerFragment) {
@@ -280,11 +282,12 @@ public class MainActivity extends Activity implements OnClickListener{
 				content.setBackgroundColor(Color.WHITE); // …Ë÷√±≥æ∞…´
 				content.getBackground().setAlpha(100); // …Ë÷√ÃÓ≥‰Õ∏√˜∂» ∑∂Œß£∫0-255
 				String data = intent.getStringExtra("message");
+				final int version=intent.getIntExtra("version", 0);//@@5.25
 				final String downloadPath = intent.getStringExtra("url");
 				content.loadDataWithBaseURL(null, data, "text/html", "utf-8",
 						null);
 				button1.setText(R.string.update_now1);
-				button2.setText(R.string.next_time1);
+				button2.setText(R.string.ignore);
 				button1.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
@@ -312,6 +315,7 @@ public class MainActivity extends Activity implements OnClickListener{
 					public void onClick(View v) {
 						if (null != dialog_update) {
 							dialog_update.cancel();
+							SharedPreferencesManager.getInstance().putData(mContext,"IGNOREVERSION", version);//@@5.25
 						}
 					}
 				});
@@ -345,6 +349,7 @@ public class MainActivity extends Activity implements OnClickListener{
 				}
 				tab_component.setBackgroundResource(R.drawable.daohang1);
 				replaceFragment(R.id.fragContainer, mMyDeviceFragment, fragTags[0]);
+				mMyDeviceFragment.isReplaceFragment();//@@5.26
 			}else{
 				Intent intent = new Intent(mContext,LoginActivity.class);
 				startActivity(intent);
@@ -408,7 +413,7 @@ public class MainActivity extends Activity implements OnClickListener{
 			if(drawerLayout.isDrawerOpen(leftLayout)){
 				drawerLayout.closeDrawer(leftLayout);
 			}
-			new MyTast().execute();
+			new MyTast().execute("0");//@@5.25
 			
 			break;
 		case R.id.menu_five://◊¢œ˙
@@ -614,7 +619,12 @@ public class MainActivity extends Activity implements OnClickListener{
 		protected String doInBackground(String... params) {
 			// TODO Auto-generated method stub\
 			long ll = -1;
-			new MainThread(mContext).checkUpdate(ll);
+			String ifFirst=params[0];//@@5.25
+			if(ifFirst.equals("1")){
+				new MainThread(mContext).checkUpdate(ll);
+			}else{
+				new MainThread(mContext).checkUpdate(0);//@@5.25
+			}
 			return null;
 		}
 		

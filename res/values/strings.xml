@@ -599,10 +599,10 @@
     <string name="crc_configurantion_fail">CRC validation error ...</string>
     <string name="this_device_have_configurantion">The device has been configured ...</string>
     <string name="run_once">Run once</string>
-    <string name="everyday">Every day</string>
-    <string name="workday">Working day</string>
+    <string name="everyday">Every Day</string>
+    <string name="workday">Working Day</string>
     <string name="weekend">Weekend</string>
-    <string name="no_setted">Not set</string>
+    <string name="no_setted">Not Set</string>
     <string name="is_setting">Configuring</string>
     <string name="set_success">The configuration was successful</string>
     <string name="set_fail">Configuration failed</string>
@@ -707,7 +707,7 @@
     <string name="on">ON</string>
     <string name="off">OFF</string>
     <string name="close">Close</string>
-    <string name="open_time">Open time</string>
+    <string name="open_time">Open Time</string>
     <string name="open">Open</string>
     <string name="get_device_share_massage">You have a device sharing message.</string>
     <string name="clean_fail">Empty Failed</string>
@@ -751,11 +751,11 @@
     <string name="choose_new_device">Please select new device：</string>
     <string name="list_camare">Camera List</string>
     <string name="chuanganqi_type">Sensor Type</string>
-    <string name="yuzhiwei">Preset Position</string>
+    <string name="yuzhiwei">Position</string>
     <string name="set_yuzhiwei">Set Preset Position</string>
-    <string name="click_store_yuzhiwei">(Click to store the current camera preset)</string>
-    <string name="look_yuzhiwei">View Presets</string>
-    <string name="click_turn_to_yuzhiwei">(Click to stored preset)</string>
+    <string name="click_store_yuzhiwei">(Store the current preset)</string>
+    <string name="look_yuzhiwei">View Preset</string>
+    <string name="click_turn_to_yuzhiwei">(Click to watch preset)</string>
     <string name="is_delete_data">Whether delete the data?</string>
     <string name="log">Log:</string>
     <string name="share_device">Device Sharing</string>
@@ -810,5 +810,13 @@
     <string name="no_more_then_ten_words">Device name can not exceed 8 characters.</string>
     <string name="psw_have_to_be_num">The password must be 6 to 15 digits.</string>
     <string name="close_alarm_voice">Close Voice</string>
+    <string name="setting_wait">Setting...</string>
+    <string name="sunday">Sun</string>
+    <string name="monday">Mon</string>
+    <string name="tuesday">Tues</string>
+    <string name="wednesday">Wed</string>
+    <string name="thurday">Thur</string>
+    <string name="friday">Fri</string>
+    <string name="saturday">Sat</string>
 
 </resources>
