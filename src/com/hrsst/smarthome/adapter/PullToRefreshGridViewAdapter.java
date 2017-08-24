@@ -770,12 +770,12 @@ public class PullToRefreshGridViewAdapter extends BaseAdapter {
 	    	   }
 	       }
 	     //@@6.2修改插座在线和布防状态
-	       public static void updateSocketOnlineState(String devId, int onlineState,int defenceState){
+	       public static void updateSocketOnlineState(String devId, int onlineState,int State){
 	    	   if(list!=null&&list.size()>0){
 	    		   for(int i=0;i<list.size();i++){
 		    		   if(list.get(i).getDevMac().equals(devId)){
 		    			   list.get(i).setLightOnOrOutLine(onlineState);
-		    			   list.get(i).setDefence(defenceState);
+		    			   list.get(i).setSocketStates(State);
 		    			   break;
 		    		   }
 		    	   }

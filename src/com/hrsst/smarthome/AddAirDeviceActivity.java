@@ -184,7 +184,11 @@ public class AddAirDeviceActivity extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if(resultCode==1){
-			air_device_mac.setText(data.getExtras().getString("msg"));
+			String mactemp=data.getExtras().getString("msg");
+			if(mactemp.charAt(0)=='H'){
+				mactemp=mactemp.substring(1, mactemp.length());
+			}
+			air_device_mac.setText(mactemp);
 		}
 	}
 	private int count = 0;

@@ -59,6 +59,7 @@ import com.hrsst.smarthome.global.AppConfig;
 import com.hrsst.smarthome.global.Constants;
 import com.hrsst.smarthome.global.NpcCommon;
 import com.hrsst.smarthome.net.P2PConnect;
+import com.hrsst.smarthome.net.P2PListener;
 import com.hrsst.smarthome.net.SettingListener;
 import com.hrsst.smarthome.net.SocketUDP;
 import com.hrsst.smarthome.order.SendServerOrder;
@@ -181,6 +182,11 @@ public class ApMonitorActivity extends BaseMonitorActivity implements OnClickLis
 	    mContext=this;
 		mContact=(Contact) getIntent().getSerializableExtra("contact");
 		ifshare=getIntent().getExtras().getInt("ifshare");//@@
+		P2PHandler.getInstance().p2pInit(this,
+				new P2PListener(),
+				new SettingListener());//@@6.5添加此语句可以从报警界面跳入此界面时初始化接口，才能看到图像
+		Log.e("dtsjError","账号："+mContact.contactId+"密码:"+
+				mContact.contactPassword);
 		P2PHandler.getInstance().getNpcSettings(mContact.contactId,
 				mContact.contactPassword);//@@
 //		P2PHandler.getInstance().getBindAlarmId(mContact.contactId,

@@ -1,14 +1,21 @@
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 
 dependencies {
     compile fileTree(dir: 'libs', include: '*.jar')
+    compile project(':P2P-Core')
     compile project(':SwipeMenuListView')
     compile project(':SMSSDK')
+    compile project(':CaptureActivity')
 }
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "19.0.3"
+    buildToolsVersion "24.0.3"
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
 
     sourceSets {
         main {

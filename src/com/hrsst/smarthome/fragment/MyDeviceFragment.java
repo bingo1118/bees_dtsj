@@ -141,6 +141,16 @@ public class MyDeviceFragment extends Fragment implements OnClickListener{
 		init();
 //		getUserDev(0);//@@5.17
 		cameraList=new ArrayList<String>();//@@5.26
+		
+		timer = new Timer();
+		task = new TimerTask() {
+		       public void run () {
+		       Message message = new Message();
+		       message.what = 1;
+		       handler.sendMessage(message);
+		   }
+		};
+		timer.schedule(task,1000,3000); 
 	}
 	
 	private void regFilter1(){
@@ -477,7 +487,7 @@ public class MyDeviceFragment extends Fragment implements OnClickListener{
 										JSONObject jsonObjectdev=array.getJSONObject(i);
 										if(jsonObjectdev.getInt("devType")==1){
 											PullToRefreshGridViewAdapter.updateSocketOnlineState(jsonObjectdev.getString("mac"),
-													jsonObjectdev.getInt("netState"),jsonObjectdev.getInt("defence"));
+													jsonObjectdev.getInt("netState"),jsonObjectdev.getInt("outlet"));
 										}
 									}
 								}
@@ -826,15 +836,15 @@ public class MyDeviceFragment extends Fragment implements OnClickListener{
 //		}
 		
 		
-		timer = new Timer();
-		task = new TimerTask() {
-		       public void run () {
-		       Message message = new Message();
-		       message.what = 1;
-		       handler.sendMessage(message);
-		   }
-		};
-		timer.schedule(task,1000,3000); 
+//		timer = new Timer();
+//		task = new TimerTask() {
+//		       public void run () {
+//		       Message message = new Message();
+//		       message.what = 1;
+//		       handler.sendMessage(message);
+//		   }
+//		};
+//		timer.schedule(task,1000,3000); //@@6.19
 	}
 
 	
